@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<Pane fx:id="menu_principal" prefHeight="600.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rbc.Interface.ControllerPrincipal">
+   <children>
+      <Button fx:id="menu_funcionario" mnemonicParsing="false" onAction="#btnfuncionario" prefHeight="30.0" prefWidth="114.0" text="Funcionario" />
+      <Button fx:id="menu_veiculos" layoutX="114.0" mnemonicParsing="false" onAction="#btnveiculo" prefHeight="30.0" prefWidth="114.0" text="Veiculos" />
+      <Button fx:id="menu_encargos" layoutX="228.0" mnemonicParsing="false" onAction="#btnencargo" prefHeight="30.0" prefWidth="114.0" text="Encargos" />
+      <Button fx:id="menu_depositos" layoutX="342.0" mnemonicParsing="false" onAction="#btndeposito" prefHeight="30.0" prefWidth="114.0" text="Depositos" />
+      <Button fx:id="menu_balanco" layoutX="455.0" mnemonicParsing="false" onAction="#btnbalanco" prefHeight="30.0" prefWidth="141.0" text="Balanço Mensal" />
+      <Button fx:id="menu_relatorio" layoutX="596.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="114.0" text="Relatorio" />
+      <Button fx:id="menu_estoque" layoutX="710.0" mnemonicParsing="false" onAction="#btnestoque" prefHeight="30.0" prefWidth="92.0" text="Estoque" />
+   </children>
+</Pane>

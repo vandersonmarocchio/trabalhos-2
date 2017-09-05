@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rbc.Interface.ControllerDadosViagem">
+   <children>
+      <TextField fx:id="data_saida" layoutX="149.0" layoutY="23.0" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="data_chegada" layoutX="356.0" layoutY="23.0" prefHeight="25.0" prefWidth="77.0" />
+      <CheckBox fx:id="frete_cheio" layoutX="40.0" layoutY="55.0" mnemonicParsing="false" text="Frete Cheio" />
+      <TextField fx:id="frete1" layoutX="40.0" layoutY="109.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete2" layoutX="40.0" layoutY="143.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete3" layoutX="40.0" layoutY="177.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete4" layoutX="40.0" layoutY="211.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete5" layoutX="40.0" layoutY="247.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete6" layoutX="40.0" layoutY="281.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete7" layoutX="40.0" layoutY="319.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="frete8" layoutX="40.0" layoutY="353.0" onKeyPressed="#somarfrete" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel1" layoutX="130.0" layoutY="109.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel2" layoutX="130.0" layoutY="143.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel3" layoutX="130.0" layoutY="177.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel4" layoutX="130.0" layoutY="211.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel5" layoutX="130.0" layoutY="247.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel6" layoutX="130.0" layoutY="281.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel7" layoutX="130.0" layoutY="319.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="combustivel8" layoutX="130.0" layoutY="353.0" onKeyPressed="#somarcombustivel" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio1" layoutX="222.0" layoutY="109.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio2" layoutX="222.0" layoutY="143.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio3" layoutX="222.0" layoutY="177.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio4" layoutX="222.0" layoutY="211.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio5" layoutX="222.0" layoutY="247.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio6" layoutX="222.0" layoutY="281.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio7" layoutX="222.0" layoutY="319.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio8" layoutX="222.0" layoutY="353.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio9" layoutX="315.0" layoutY="109.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio10" layoutX="315.0" layoutY="143.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio11" layoutX="315.0" layoutY="177.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio12" layoutX="315.0" layoutY="211.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio13" layoutX="315.0" layoutY="247.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio14" layoutX="315.0" layoutY="281.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio15" layoutX="315.0" layoutY="319.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="pedagio16" layoutX="315.0" layoutY="353.0" onKeyPressed="#somarpedagio" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica1" layoutX="405.0" layoutY="109.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica2" layoutX="405.0" layoutY="143.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica3" layoutX="405.0" layoutY="177.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica4" layoutX="405.0" layoutY="211.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica5" layoutX="405.0" layoutY="247.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica6" layoutX="405.0" layoutY="281.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica7" layoutX="405.0" layoutY="319.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="mecanica8" layoutX="405.0" layoutY="353.0" onKeyPressed="#somarmecanica" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza1" layoutX="497.0" layoutY="110.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza2" layoutX="497.0" layoutY="143.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza3" layoutX="497.0" layoutY="177.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza4" layoutX="497.0" layoutY="211.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza5" layoutX="497.0" layoutY="247.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza6" layoutX="497.0" layoutY="281.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza7" layoutX="497.0" layoutY="319.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="limpeza8" layoutX="497.0" layoutY="353.0" onKeyPressed="#somarlimpeza" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia1" layoutX="590.0" layoutY="109.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia2" layoutX="590.0" layoutY="143.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia3" layoutX="590.0" layoutY="177.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia4" layoutX="590.0" layoutY="211.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia5" layoutX="590.0" layoutY="247.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia6" layoutX="590.0" layoutY="281.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia7" layoutX="590.0" layoutY="319.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="borracharia8" layoutX="590.0" layoutY="353.0" onKeyPressed="#somarborracharia" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros1" layoutX="683.0" layoutY="109.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros2" layoutX="683.0" layoutY="143.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros3" layoutX="683.0" layoutY="177.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros4" layoutX="683.0" layoutY="211.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros5" layoutX="683.0" layoutY="247.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros6" layoutX="683.0" layoutY="281.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros7" layoutX="683.0" layoutY="319.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="outros8" layoutX="683.0" layoutY="353.0" onKeyPressed="#somaroutros" prefHeight="25.0" prefWidth="77.0" />
+      <Label layoutX="41.0" layoutY="27.0" text="Data Saída:" />
+      <Label layoutX="248.0" layoutY="27.0" text="Data Chegada:" />
+      <Label layoutX="130.0" layoutY="86.0" text="Combustível:" />
+      <Label layoutX="284.0" layoutY="86.0" text="Pedágio:" />
+      <Label layoutX="590.0" layoutY="86.0" text="Borracharia:" />
+      <Label layoutX="405.0" layoutY="86.0" text="Mecânica:" />
+      <Label layoutX="497.0" layoutY="86.0" text="Limpeza:" />
+      <Label layoutX="683.0" layoutY="86.0" text="Outros" />
+      <Label layoutX="40.0" layoutY="86.0" text="Frete" />
+      <Label fx:id="total_frete" layoutX="42.0" layoutY="392.0" />
+      <Label fx:id="total_combustivel" layoutX="132.0" layoutY="392.0" />
+      <Label fx:id="total_pedagio" layoutX="263.0" layoutY="392.0" />
+      <Label fx:id="total_mecanica" layoutX="407.0" layoutY="392.0" />
+      <Label fx:id="total_limpeza" layoutX="499.0" layoutY="392.0" />
+      <Label fx:id="total_borracharia" layoutX="592.0" layoutY="392.0" />
+      <Label fx:id="total_outros" layoutX="684.0" layoutY="392.0" />
+      <Label layoutX="41.0" layoutY="466.0" text="Liquido:" />
+      <Button fx:id="Salvar" layoutX="281.0" layoutY="509.0" mnemonicParsing="false" text="Salvar" />
+      <Button fx:id="Cancelar" layoutX="415.0" layoutY="509.0" mnemonicParsing="false" onAction="#btncancelar" text="Cancelar" />
+      <Label fx:id="total_liquido" layoutX="132.0" layoutY="466.0" />
+      <Button fx:id="teste" layoutX="46.0" layoutY="509.0" mnemonicParsing="false" onAction="#btnCalcular" text="Calcular" />
+      <Text fx:id="comi" layoutX="132.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Label layoutX="40.0" layoutY="437.0" text="Comissão:" />
+   </children>
+</Pane>

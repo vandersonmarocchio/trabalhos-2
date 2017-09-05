@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rbc.Interface.ControllerEstoque">
+   <children>
+      <Label layoutX="26.0" layoutY="22.0" text="Lista de estoque:" />
+      <Button fx:id="adicionar" layoutX="26.0" layoutY="276.0" mnemonicParsing="false" onAction="#btnadicionar" text="Adicionar" />
+      <Button fx:id="editar" layoutX="172.0" layoutY="276.0" mnemonicParsing="false" onAction="#btneditar" text="Editar" />
+      <Button fx:id="excluir" layoutX="313.0" layoutY="276.0" mnemonicParsing="false" onAction="#btnExcluir" text="Excluir" />
+      <ScrollPane layoutX="25.0" layoutY="53.0" prefHeight="200.0" prefWidth="350.0">
+         <content>
+            <TableView fx:id="tabela" prefHeight="206.0" prefWidth="357.0">
+              <columns>
+                <TableColumn fx:id="coluna_item" prefWidth="158.0" text="Item" />
+                <TableColumn fx:id="coluna_valor" prefWidth="95.0" text="Valor" />
+                  <TableColumn fx:id="coluna_quantidade" prefWidth="93.0" text="Qtd" />
+              </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+   </children>
+</Pane>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rbc.Interface.ControllerDadosEncargo">
+   <children>
+      <TextField fx:id="mes" layoutX="25.0" layoutY="72.0" prefHeight="5.0" prefWidth="70.0" />
+      <Label layoutX="25.0" layoutY="48.0" text="Mes/Ano:" />
+      <Text fx:id="nome_funcionario" layoutX="25.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <TableView layoutX="25.0" layoutY="108.0" prefHeight="265.0" prefWidth="340.0">
+        <columns>
+          <TableColumn fx:id="coluna_descricao" prefWidth="206.0" text="Descrição" />
+          <TableColumn fx:id="coluna_valor" prefWidth="132.0" text="Valor" />
+        </columns>
+      </TableView>
+      <TextField fx:id="descricao" layoutX="25.0" layoutY="421.0" prefHeight="25.0" prefWidth="206.0" />
+      <TextField fx:id="valor" layoutX="246.0" layoutY="421.0" prefHeight="25.0" prefWidth="117.0" />
+      <Button fx:id="Adicionar" layoutX="25.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnadicionar" text="Adicionar" />
+      <Button fx:id="Editar" layoutX="111.0" layoutY="455.0" mnemonicParsing="false" text="Editar" />
+      <Button fx:id="Excluir" layoutX="181.0" layoutY="455.0" mnemonicParsing="false" text="Excluir" />
+      <Label layoutX="202.0" layoutY="385.0" text="Total:" />
+      <Label layoutX="246.0" layoutY="385.0" text="R$" />
+      <Label fx:id="valor_total" layoutX="277.0" layoutY="385.0" />
+      <Button fx:id="Salvar" layoutX="111.0" layoutY="501.0" mnemonicParsing="false" text="Salvar" />
+      <Button fx:id="Cancelar" layoutX="216.0" layoutY="501.0" mnemonicParsing="false" onAction="#btncancelar" text="Cancelar" />
+   </children>
+</Pane>

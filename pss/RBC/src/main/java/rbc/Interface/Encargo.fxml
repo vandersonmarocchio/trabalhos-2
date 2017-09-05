@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rbc.Interface.ControllerEncargo">
+   <children>
+      <Text layoutX="26.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecione funcionário:" />
+      <ScrollPane layoutX="25.0" layoutY="66.0" prefHeight="291.0" prefWidth="280.0">
+         <content>
+            <TableView fx:id="tabela" prefHeight="291.0" prefWidth="265.0">
+               <columns>
+                  <TableColumn fx:id="coluna_mes" prefWidth="65.0" text="Mês" />
+                  <TableColumn fx:id="coluna_total" prefWidth="93.0" text="Total" />
+                  <TableColumn fx:id="coluna_situacao" prefWidth="121.0" text="Situação" />
+               </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <Button fx:id="adicionar_encargo" layoutX="25.0" layoutY="377.0" mnemonicParsing="false" onAction="#btnadicionar" text="Adicionar" />
+      <Button fx:id="editar_encargo" layoutX="142.0" layoutY="377.0" mnemonicParsing="false" text="Editar" />
+      <Button fx:id="excluir_encargo" layoutX="243.0" layoutY="377.0" mnemonicParsing="false" text="Excluir" />
+      <ComboBox fx:id="funcionarios" layoutX="174.0" layoutY="29.0" onAction="#btnfuncionario" prefHeight="25.0" prefWidth="132.0" promptText="Funcionários" />
+   </children>
+</Pane>
