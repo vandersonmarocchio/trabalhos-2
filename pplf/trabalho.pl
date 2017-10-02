@@ -185,7 +185,7 @@ preguntar(Problema):- new(Di,dialog('Diagnostico medico')),
      new(B1,button(si,and(message(Di,return,si)))),
      new(B2,button(no,and(message(Di,return,no)))),
 
-         send(Di,append(L2)),
+  send(Di,append(L2)),
 	 send(Di,append(La)),
 	 send(Di,append(B1)),
 	 send(Di,append(B2)),
@@ -209,7 +209,7 @@ limpiar.
 
 botones :- lim,
 	send(@boton,free),
-	send(@btncarrera,free),
+	send(	@btncarrera,free),
 	fallas(Falla),
 	send(@texto,selection(' ')),
 	send(@respl,selection(Falla)),
