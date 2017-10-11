@@ -28,39 +28,39 @@ inicio:-
 
 fallas('USTED PADECE PAPERAS:
 	TRATAMIENTO:
- Aplicar compresas frías o calientes en la zona del cuello.
-Tomar paracetamol (Tylenol) para aliviar el dolor. (No le dé ácido acetilsalicílico
-a los niños con una enfermedad viral debido al riesgo del síndrome de Reye).
-Tomar líquidos adicionales.
+ Aplicar compresas frï¿½as o calientes en la zona del cuello.
+Tomar paracetamol (Tylenol) para aliviar el dolor. (No le dï¿½ ï¿½cido acetilsalicï¿½lico
+a los niï¿½os con una enfermedad viral debido al riesgo del sï¿½ndrome de Reye).
+Tomar lï¿½quidos adicionales.
 Comer alimentos blandos.
-Hacer gárgaras con agua tibia con sal.
+Hacer gï¿½rgaras con agua tibia con sal.
 '):-paperas,!.
 
 fallas('USTED PADECE VARICELA:
        TRATAMIENTO:
-lociones para aliviar la picazón, paracetamol para la fiebre y el fármaco antivírico
-aciclovir.  el aciclovir reduce el número de días de fiebre de la varicela en niños
+lociones para aliviar la picazï¿½n, paracetamol para la fiebre y el fï¿½rmaco antivï¿½rico
+aciclovir.  el aciclovir reduce el nï¿½mero de dï¿½as de fiebre de la varicela en niï¿½os
 sin otra enfermedad,'):-varicela,!.
 
 fallas('USTED PADECE SARAMPION:
 TRATAMIENTO:
-El descanso y el aislamiento junto con el tratamiento de síntomas se pueden emprender
+El descanso y el aislamiento junto con el tratamiento de sï¿½ntomas se pueden emprender
 para permitir el paso del episodio lejos en sus los propio. cremas hidratantes Locales
-de la piel se prescriben en caso de la erupción que pica. '):-sarampion,!.
+de la piel se prescriben en caso de la erupciï¿½n que pica. '):-sarampion,!.
 
 fallas('USTED PADECE ANEMIA:
 TRATAMIENTO:
-Tratamiento para detener el sangrado. Si la pérdida de sangre está causando
-anemia por deficiencia de hierro, el tratamiento dependerá de la causa del sangrado.
-Por ejemplo, si usted tiene una úlcera sangrante,
-el médico puede recetarle antibióticos y otras medicinas para tratar la úlcera.
+Tratamiento para detener el sangrado. Si la pï¿½rdida de sangre estï¿½ causando
+anemia por deficiencia de hierro, el tratamiento dependerï¿½ de la causa del sangrado.
+Por ejemplo, si usted tiene una ï¿½lcera sangrante,
+el mï¿½dico puede recetarle antibiï¿½ticos y otras medicinas para tratar la ï¿½lcera.
 	 '):-anemia,!.
 
 fallas('USTED PADECE RESFRIADO:
 TRATAMIENTO:
-El tratamiento de los síntomas no hará desaparecer el resfriado,
-pero le ayudará a sentirse mejor.
-Los antibióticos casi nunca se necesitan para tratar un resfriado común.
+El tratamiento de los sï¿½ntomas no harï¿½ desaparecer el resfriado,
+pero le ayudarï¿½ a sentirse mejor.
+Los antibiï¿½ticos casi nunca se necesitan para tratar un resfriado comï¿½n.
 El paracetamol (Tylenol) y el ibuprofeno (Advil, Motrin) ayudan a disminuir
 la fiebre y aliviar los dolores musculares.
          '):-resfriado,!.
@@ -68,31 +68,31 @@ la fiebre y aliviar los dolores musculares.
 fallas('USTED PADECE INFLUENZA:
 TRATAMIENTO:
 Se recomiendan tres medicamentos antivirales para la influenza aprobados por
-la Administración de Alimentos y Medicamentos de EE. UU. (FDA) para usar en
+la Administraciï¿½n de Alimentos y Medicamentos de EE. UU. (FDA) para usar en
 los Estados Unidos durante la temporada de influenza 2015-2016: oseltamivir
-(Tamiflu®) por vía oral, zanamivir (Relenza®) para inhalar y peramivir
-(Rapivab®) por vía intravenosa. Estos medicamentos son antivirales químicamente
-relacionados, conocidos como inhibidores de neuraminidasa que actúan contra los
+(Tamifluï¿½) por vï¿½a oral, zanamivir (Relenzaï¿½) para inhalar y peramivir
+(Rapivabï¿½) por vï¿½a intravenosa. Estos medicamentos son antivirales quï¿½micamente
+relacionados, conocidos como inhibidores de neuraminidasa que actï¿½an contra los
 virus de la influenza A y B.
          '):-influenza,!.
 
 fallas('USTED PADECE HEPATITIS B:
 TRATAMIENTO:
-Actualmente disponemos del interferón alfa en forma pegilada denominada Peg-IFN,
-fármaco que estimula la inmunidad y que actúa sobre el sistema inmunológico para
-que éste elimine las células hepáticas infectadas. También podemos utilizar dos
-tipos de sustancias antivirales: los análogos de los nucleósidos a los que
-pertenecen lamivudina, telbivudina y entecavir y los análogos del nucleótidos
+Actualmente disponemos del interferï¿½n alfa en forma pegilada denominada Peg-IFN,
+fï¿½rmaco que estimula la inmunidad y que actï¿½a sobre el sistema inmunolï¿½gico para
+que ï¿½ste elimine las cï¿½lulas hepï¿½ticas infectadas. Tambiï¿½n podemos utilizar dos
+tipos de sustancias antivirales: los anï¿½logos de los nucleï¿½sidos a los que
+pertenecen lamivudina, telbivudina y entecavir y los anï¿½logos del nucleï¿½tidos
 como son adefovir y tenofovir.
          '):-hepatitisb,!.
 
 fallas('USTED PADECE HEPATITIS C:
 TRATAMIENTO:
 El tratamiento de la hepatitis C se basa en medicamentos antivirales.
-El tratamiento indicado es la combinación de dos medicamentos,
-el interferón alfa y la ribavirina y, actualmente, se emplea una nueva
-formulación del interferón alfa, el interferón alfa pegilado,
-cuya eficacia en combinación con ribavirina es aún mayor.
+El tratamiento indicado es la combinaciï¿½n de dos medicamentos,
+el interferï¿½n alfa y la ribavirina y, actualmente, se emplea una nueva
+formulaciï¿½n del interferï¿½n alfa, el interferï¿½n alfa pegilado,
+cuya eficacia en combinaciï¿½n con ribavirina es aï¿½n mayor.
 '):-hepatitisc,!.
 
 fallas('sin resultados, usted no dio la informacion necesaria o suficiente
@@ -113,7 +113,7 @@ varicela:- svaricela,
         pregunta('tienes fiebre? '),
 	pregunta('tienes dolor de cabeza?'),
 	pregunta('tienes cansancio');
-	pregunta('tienes pérdida de apetito?').
+	pregunta('tienes pï¿½rdida de apetito?').
 
 sarampion:- ssarampion,
 	pregunta('tienes tos?'),
