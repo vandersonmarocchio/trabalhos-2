@@ -4,48 +4,71 @@
 *
 */
 
-inicio:- hipoteses(Doenca),
-  nl,
-  write('Diagnostico -> '),
-  write(Doenca),
-  undo.
+%chama a função pergunta que faz as perguntas dos sintomas
+sintomas(P, Val):-
+	pergunta('O paciente',Val).
 
-% respostas
-hipoteses('Dermatite com febre'):- dermatite_com_febre, !.
-hipoteses('Febre em bebes com menos de 6 meses é muito perigoso!! Procure um médico'):- febre_em_bebe, !.
-hipoteses('Otite Interna'):- otite_interna, !.
-hipoteses('Não consegui diagnostica-lo procura um médico para mais exames!!'). /*sem diagnóstico*/
+%vaidação das respostas
+pergunta(Obj, Val):-
+	resposta(Obj, Val, true),!.
+pergunta(Obj, Val):-
+	resposta(Obj, Val, false),!, fail.
 
-% Doenças e seus sintomas
-dermatite_com_febre :-
-  pergunta('febre?'),
-  pergunta('erupção na pele?').
-febre_em_bebe :-
-  pergunta('febre?'),
-  pergunta('menos de 6 meses?').
-otite_interna :-
-  pergunta('febre?'),
-  pergunta('chora e puxa orelha ou acorda gritando?').
-pneumonia :-
-  pergunta('febre?'),
-  pergunta('ritmo respiratório está mais rápido que o normal?').
+%função que faz a pergunta a registra (assert) sua resposta
+pergunta(Obj, Val):-
+	write(Obj),
+	write(' '),
+	write( Val),
+	read(Resposta), !,
+	((Resposta=s, assert(resposta(Obj, Val, true)));
+	(assert(resposta(Obj, Val, false)),fail)).
 
+%faz o diagnostico
+diagnostico:-
+	write("Por favor, digite (s/sim) ou (n/nao) para as perguntas:"),
+	nl,
+	doenca(sintomas,Doenca),!,
+	nl,
+	write('A sua doença pode ser '),
+	write(Doenca).
 
-% Faz as perguntas
-:- dynamic sim/1,nao/1.
+%entre nesse caso quando não acha nenhuma doença
+diagnostico:-
+	nl,
+	write('Desculpe, mas não fui capaz de diagnosticar a sua doença!!').
 
-pergunta(Sintomas) :-
-    write('Você está com '),
-    write(Sintomas),
-    read(Resposta),
-    ((Resposta == sim ; Resposta == s)->assert(sim(Sintomas));
-    assert(nao(Sintomas)), fail).
+% main do programa
+inicio:-
+	abolish(resposta/3),
+	dynamic(resposta/3),
+	retractall(resposta/3),
+	diagnostico.
 
+%base de dados das doenças e seus sintomas
+doenca(Paciente,'Dermatite com Febre'):-
+						sintomas(Paciente, 'tem febre?|: '),
+						sintomas(Paciente, 'tem erupção na pele?').
 
-% Verifica os sintomas
-pergunta(S):-(sim(S)->true; (nao(S)->fail; pergunta(S))).
+doenca(Paciente,'febre em bebe'):-
+						sintomas(Paciente,'tem febre?|: '),
+						sintomas(Paciente,'tem menos de 6 meses?').
 
-% desfaz todas as afirmações de sim e não
-undo :- retract(sim(_)),fail.
-undo :- retract(nao(_)),fail.
-undo.
+doenca(Paciente,'Otite Interna'):-
+						sintomas(Paciente,'tem febre?|: '),
+						sintomas(Paciente,'chora e puxa orelha ou acorda gritando?').
+
+doenca(Paciente,'Pneumonia'):-
+						sintomas(Paciente,'tem febre?|: '),
+						sintomas(Paciente,'está com o ritmo respiratório mais rápido que o normal?').
+
+doenca(Paciente,'Resfriado, ou provavelmente Gripe'):-
+						sintomas(Paciente, 'tem febre?|: '),
+						sintomas(Paciente, 'tem tosse e coriza?').
+
+doenca(Paciente,'Meningite, ou Infecção no Sistema Urinário \nURGENTE: vá ao médico'):-
+						sintomas(Paciente, 'tem febre?|: '),
+						sintomas(Paciente, 'tem vomito sem diarreia, sonolencia anormal e irritabilidade incomum?').
+
+doenca(Paciente,'Resfriado, ou provavelmente Gripe'):-
+						sintomas(Paciente, 'tem febre?|: '),
+						sintomas(Paciente, 'tem tosse e coriza?').
