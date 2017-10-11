@@ -1,7 +1,12 @@
-/* Trabalho de PPLF
-*  Diogo Alves de Almeida, Ra: 95108
-*
-*
+/* Nome: Trabalho de PPLF
+*  Autor: Diogo Alves de Almeida, Ra: 95108
+*  Professor: Wagner Igarashi
+*	 Descrição: Para a realização desse trabalho foi utilizado o procedimento dinâmico para extrair os dados do usuário e comparar com a base de dados existente.
+*  Ao pesquisar possiveis soluções, analisei alguns programas que utilizavam esse método e achei interessante e mais fácil para a realização do trabalho.
+*	 Referências: http://www.cse.unsw.edu.au/~billw/dictionaries/prolog/dynamic.html
+*								http://www.swi-prolog.org/pldoc/man?predicate=dynamic/1
+* 							http://www.swi-prolog.org/pldoc/man?predicate=retractall/1
+*								http://www.swi-prolog.org/pldoc/man?predicate=abolish/1
 */
 
 %chama a função pergunta que faz as perguntas dos sintomas
