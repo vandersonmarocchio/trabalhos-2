@@ -98,7 +98,7 @@ cuya eficacia en combinaci�n con ribavirina es a�n mayor.
 fallas('sin resultados, usted no dio la informacion necesaria o suficiente
 ERROR p560c4!').
 
-% preguntas para dirigir a la enfermedad adecuada con su respectivo
+% ffs para dirigir a la enfermedad adecuada con su respectivo
 % identificador de enfermedad
 
 paperas:- spaperas,
@@ -192,7 +192,7 @@ preguntar(Problema):- new(Di,dialog('Diagnostico medico')),
 
 	 send(Di,default_button,si),
 	 send(Di,open_centered),get(Di,confirm,Answer),
-	 write(Answer),send(Di,destroy),
+	 write(Answer),
 	 ((Answer==si)->assert(si(Problema));
 	 assert(no(Problema)),fail).
 
