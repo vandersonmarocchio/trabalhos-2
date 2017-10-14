@@ -5,7 +5,7 @@
 *   execução, por meio da inclusão ou exclusão de cláusulas (fatos ou ou regras).
 *   Referências:  https://www.ime.usp.br/~slago/pl-9.pdf
 *                 http://www.cse.unsw.edu.au/~billw/dictionaries/prolog/dynamic.html
-*	                http://www.swi-prolog.org/pldoc/man?predicate=dynamic/1
+*	          http://www.swi-prolog.org/pldoc/man?predicate=dynamic/1
 */
 
 inicio:-
@@ -16,8 +16,8 @@ inicio:-
 
 % Respostas
 % Febre e menor de 1 ano
-febre_menor('Dermatite com febre.'):- dermatite_com_febre, !.
 febre_menor('Febre em bebes com menos de 6 meses é muito perigoso. Procure um médico!!'):- febre_em_bebe, !.
+febre_menor('Dermatite com febre.'):- dermatite_com_febre, !.
 febre_menor('Otite Interna.'):- otite_interna, !.
 febre_menor('Pneumonia.') :- pneumonia, !.
 febre_menor('Resfriado ou, possivelmente gripe!') :- resfriado, !.
@@ -150,7 +150,7 @@ primeiro_sintoma :-
   write('O Paciente tem diarreia?'),
   read(Resposta),
   (Resposta == sim; Resposta == s) -> diarreia;
-  write('Infelizmente não vou conseguir diagnostica-lo, procure orientação médica!!').
+  write('Infelizmente não vou consegui diagnostica-lo, procure orientação médica!!').
 
 % Faz as perguntas
 :- dynamic sim/1,nao/1.
