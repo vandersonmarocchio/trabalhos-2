@@ -1,3 +1,9 @@
+/*	Trabalho da disciplina Estrutura de Dados
+ *	Prof: Franklin Cesar Flores (fcflores@din.uem.br)
+ *	Alunos: Diogo Alves de Almeida,	Ra:95108
+ *		Danillo Dias Nascimento,	Ra:90561
+ */
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

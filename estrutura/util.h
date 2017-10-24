@@ -2,7 +2,6 @@
 #define util_H_
 #include <stdio.h>
 
-
 typedef struct caixinha{
  int info;
  struct caixinha *prox;
