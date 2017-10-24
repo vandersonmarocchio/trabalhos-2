@@ -150,7 +150,7 @@ primeiro_sintoma :-
   write('O Paciente tem diarreia?'),
   read(Resposta),
   (Resposta == sim; Resposta == s) -> diarreia;
-  write('Infelizmente não vou consegui diagnostica-lo, procure orientação médica!!').
+  write('Infelizmente não vou conseguir iagnostica-lo, procure orientação médica!!').
 
 % Faz as perguntas
 :- dynamic sim/1,nao/1.
