@@ -42,6 +42,8 @@ int main(){
 
 int menu(PALAVRA *lista, int totalpalavras){
 	int x;
+
+	printf("\n\t === Palavras e caminhos de palavras ====\n ");
 	printf("\n\t# # # # # # # Menu # # # # # # #\n");
 	printf("\t#                              #\n");
 	printf("\t#   1 - Imprimir               #\n");
@@ -50,6 +52,8 @@ int menu(PALAVRA *lista, int totalpalavras){
 	printf("\t#   0 - Sair                   #\n");
 	printf("\t#                              #\n");
 	printf("\t# # # # # # # #  # # # # # # # #\n\t-> ");
+
+	//Lê a resposta do usuário
 	scanf("%i", &x);
 	switch (x) {
     case 1:
