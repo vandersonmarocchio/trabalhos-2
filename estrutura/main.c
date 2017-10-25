@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "importar.h"
 #include "util.h"
 
@@ -67,7 +66,8 @@ int menu(PALAVRA *lista, int totalpalavras){
       break;
     case 0:
 			printf("\n\tFim de programa!!\n\n");
-    	return 0;
+			printf("\n\tObrigado!!\n\n");
+			return 0;
     default:
 			system("clear");
 			printf("\n\tOpção Inválida!\n");
