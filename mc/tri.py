@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import math
 
@@ -20,6 +19,7 @@ A = ([[xi[1] - xi[0], yi[1] - yi[0]],
 for i in range(5):
     raio.append(10**((ro0[i]-rok[i])/(10*lk[i])))
 
+import matplotlib.pyplot as plt
 circle1 = plt.Circle((xi[0], yi[0]), raio[0], color='g', clip_on= False, fill = False)
 circle2 = plt.Circle((xi[1], yi[1]), raio[1], color='g', clip_on= False, fill = False)
 circle3 = plt.Circle((xi[2], yi[2]), raio[2], color='g', clip_on= False, fill = False)
