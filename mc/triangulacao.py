@@ -8,12 +8,12 @@ zi = [1.35, 1.35, 1.35, 1.35, 1.35] # Coordenada z dos receptores
 ro0 = [-26, -33.8, -29.8, -31.2, -33]
 lk = [2.1, 1.8, 1.3, 1.4, 1.5]
 
-rok = [-48.4, -50.6, -32.2, -47.4, -46.3] # Caso 1
-xreal = 0 # Caso 1
-yreal = 9 # Caso 1
-#rok = [-46.9, -46.4, -41.2, -45.8, -48.7] # Caso 2
-#xreal = 3 # Caso 2
-#yreal = 3 # Caso 2
+#rok = [-48.4, -50.6, -32.2, -47.4, -46.3] # Caso 1
+#xreal = 0 # Caso 1
+#yreal = 9 # Caso 1
+rok = [-46.9, -46.4, -41.2, -45.8, -48.7] # Caso 2
+xreal = 3 # Caso 2
+yreal = 3 # Caso 2
 
 zreal = 1.24 # Caso1 e Caso2
 dk = []
