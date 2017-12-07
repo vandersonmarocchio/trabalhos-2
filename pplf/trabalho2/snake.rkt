@@ -9,10 +9,10 @@
 (define BLOCK_SIZE 16)
 
 ; lista com a posição inicial da cobra
-(define cobra (list (list 10 0) (list 11 0)))
+(define cobra (list (list 2 17) (list 1 17)))
 
 ; diração para onde a cobra está indo
-(define direcao 'direita)
+(define direcao 'cima)
 
 ; onde a comida está
 (define comida (list 9 8))
@@ -37,15 +37,19 @@
 (define (andando-sozinho)
   (define x  (- (pega-cabeca 0 cobra) (list-ref comida 0)))
   (define y  (- (pega-cabeca 1 cobra) (list-ref comida 1)))
-  (define abs-x (abs x))
-  (define abs-y (abs y))
+  (define dif-x (abs x))
+  (define dif-y (abs y))
   (cond
-   [(> abs-x abs-y)
-    (if (> x 0) (if (eq? direcao 'direita) 'cima 'esquerda)
-                (if (eq? direcao 'esquerda) 'baixo 'direita))]
+   [(> dif-x dif-y)
+    (if (> x 0) (cond [(eq? direcao 'direita) 'cima]
+                      [else 'esquerda])
+                (cond [(eq? direcao 'esquerda) 'baixo]
+                      [else 'direita]))]
    [else
-    (if (> y 0) (if (eq? direcao 'baixo) 'esquerda 'cima)
-                (if (eq? direcao 'cima) 'direita 'baixo))]))
+    (if (> y 0) (cond [(eq? direcao 'baixo) 'esquerda]
+                      [else 'cima])
+                (cond [(eq? direcao 'cima) 'direita]
+                      [else'baixo]))]))
 
 
 ; move-bloco: inteiro inteiro -> lista
@@ -102,9 +106,9 @@
 ; restart: ->void
 ; ação: seta todas as variaveis para o estado original
 (define restart (lambda()
-  (set! direcao 'direita)
+  (set! direcao 'cima)
   (set! comida (list 9 8))
-  (set! cobra (list (list 2 1) (list 1 1)))
+  (set! cobra (list (list 2 17) (list 1 17)))
   (set! pontos 0)
 ))
 
