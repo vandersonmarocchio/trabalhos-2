@@ -1,5 +1,5 @@
 #lang racket
-(require racket/gui)
+(require racket/gui/base)
 
 ; tamanho da altura e da largura do jogo
 (define BLOCKS_WIDTH 20)
@@ -34,21 +34,21 @@
 
 ; anda sozinho
 ; ação: verifica a distancia entre a cobra e a comida, em seguida calcula o valor absoluto de x e y.
-(define (andando-sozinho)
+(define (anda-sozinho)
   (define x  (- (pega-cabeca 0 cobra) (list-ref comida 0)))
   (define y  (- (pega-cabeca 1 cobra) (list-ref comida 1)))
   (define dif-x (abs x))
   (define dif-y (abs y))
   (cond
    [(> dif-x dif-y)
-    (if (> x 0) (cond [(eq? direcao 'direita) 'cima]
+    (if (> x 0) (cond [(eq? direcao 'direita) 'baixo]
                       [else 'esquerda])
-                (cond [(eq? direcao 'esquerda) 'baixo]
+                (cond [(eq? direcao 'esquerda) 'cima]
                       [else 'direita]))]
    [else
-    (if (> y 0) (cond [(eq? direcao 'baixo) 'esquerda]
+    (if (> y 0) (cond [(eq? direcao 'baixo) 'direita]
                       [else 'cima])
-                (cond [(eq? direcao 'cima) 'direita]
+                (cond [(eq? direcao 'cima) 'esquerda]
                       [else'baixo]))]))
 
 
@@ -114,7 +114,7 @@
 
 ; cria a janela para a cobra
 (define frame (new frame%
-  [label "Cobra"]
+  [label "Snake - Trabalho de PPLF"]
   [width (* BLOCKS_WIDTH BLOCK_SIZE)]
   [height (* BLOCKS_HEIGHT BLOCK_SIZE)]))
 
@@ -126,14 +126,15 @@
       [(eq? (send key-event get-key-code) 'right) (set! direcao 'direita)]
       [(eq? (send key-event get-key-code) 'up) (set! direcao 'cima)]
       [(eq? (send key-event get-key-code) 'down) (set! direcao 'baixo)]
-      [(eq? (send key-event get-key-code) '#\i) (set! IA #t) (restart)]
-      [(eq? (send key-event get-key-code) '#\r) (set! IA #f) (restart)]))
+      [(eq? (send key-event get-key-code) '#\1) (set! IA #f) (send comeco stop) (send timer start 100)]
+      [(eq? (send key-event get-key-code) '#\2) (set! IA #t) (send comeco stop) (send timer start 100)] 
+      [(eq? (send key-event get-key-code) '#\r) (set! IA #f) (send timer stop) (restart) (send comeco start 100)]))
   (super-new [parent frame])))
 
 ; atualiza-cobra: -> void
 ; ação: funções para a atualização da tela e movimentação da cobra
 (define atualiza-cobra (lambda ()
-  (cond [IA (set! direcao (andando-sozinho))])
+  (cond [IA (set! direcao (anda-sozinho))])
   (draw-block dc (list-ref comida 0) (list-ref comida 1) "red") ; desenha a comida
   (cond [(encostou-bloco cobra comida) (cresce-cobra)] [else (move-cobra direcao)]) ; checa por colisão com a comida
   (send dc draw-text (number->string pontos) (-(* BLOCKS_WIDTH BLOCK_SIZE) 310) 10)
@@ -142,16 +143,24 @@
       (draw-block dc (list-ref block 0) (list-ref block 1) "black")
       (draw-block dc (list-ref block 0) (list-ref block 1) "black")))))
 
+; inicio-de-jogo: -> void
+; ação: eventos que ocorrem ao iniciar ou resetar o jogo
+(define inicio-de-jogo (lambda ()
+  (send dc draw-text "Bem vindo ao jogo Snake!" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 40))
+  (send dc draw-text "Selecione seu modo de jogo:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 130) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 20))
+  (send dc draw-text "(1) Modo jogador" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 100) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 0))
+  (send dc draw-text "(2) Modo IA" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 100) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) -20))
+))
+
 ; fim-de-jogo: -> void
 ; ação: eventos que ocorrem ao perder o jogo
 (define fim-de-jogo (lambda ()
-  (send dc draw-text "Fim de jogo" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 60))
-  (send dc draw-text "Pontos:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 40))
-  (send dc draw-text (number->string pontos) (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 30) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 40))
-  (send dc draw-text "Recorde:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 20))
-  (send dc draw-text (number->string recorde) (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 20) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 20))
-  (send dc draw-text "(i) recomeçar modo IA" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 0))
-  (send dc draw-text "(r) recomeçar modo jogador" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 115) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) -20))
+  (send dc draw-text "Fim de jogo" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 60) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 60))
+  (send dc draw-text "Pontos:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 60) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 40))
+  (send dc draw-text (number->string pontos) (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) -15) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 40))
+  (send dc draw-text "Recorde:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 60) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 20))
+  (send dc draw-text (number->string recorde) (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) -25) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 20))
+  (send dc draw-text "(r) recomeçar" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 60) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 0))
 ))
 
 ; instancia o canvas
@@ -184,4 +193,14 @@
     (if colisao (fim-de-jogo) (atualiza-cobra)))]
   [interval #f]))
 
-(send timer start 100)
+
+(define comeco (new timer%
+  [notify-callback (lambda()
+    (send dc clear)
+    (send dc set-brush "gray" 'solid)
+    (send dc draw-rectangle 0 0 (* BLOCKS_WIDTH BLOCK_SIZE) (* BLOCKS_HEIGHT BLOCK_SIZE))
+    (inicio-de-jogo)
+    )]
+  [interval #f]))
+
+(send comeco start 100)
