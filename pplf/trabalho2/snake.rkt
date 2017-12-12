@@ -8,6 +8,7 @@
 
 #lang racket
 (require racket/gui/base)
+(require rackunit)
 
 ; define o tamanho da altura e largura do jogo.
 (define BLOCKS_WIDTH 30)
@@ -94,6 +95,8 @@
 ;                exemplo:  (pega-cabeca 1 (list (list 2 17) (list 1 17))) retorna 2.
 (define (pega-cabeca posicao lst)
   (list-ref (list-ref lst 0) posicao))
+(check-equal? (pega-cabeca 0 (list (list 2 17) (list 1 17)))2)
+(check-equal? (pega-cabeca 0 (list (list 15 17) (list 16 17)))15)
 
 ; draw-block: dc inteiro inteiro string -> void.
 ; funcionamento: desenha um bloco no objeto de desenho dado passado por parametro: coordenada x e y e a cor
@@ -155,10 +158,10 @@
 (define (canvas-key frame) (class canvas%
   (define/override (on-char key-event)
     (cond ; todo: in_list? -> set direcao
-      [(eq? (send key-event get-key-code) 'left) (set! direcao 'esquerda)]
-      [(eq? (send key-event get-key-code) 'right) (set! direcao 'direita)]
-      [(eq? (send key-event get-key-code) 'up) (set! direcao 'cima)]
-      [(eq? (send key-event get-key-code) 'down) (set! direcao 'baixo)]
+      [(eq? (send key-event get-key-code) '#\a) (set! direcao 'esquerda)]
+      [(eq? (send key-event get-key-code) '#\d) (set! direcao 'direita)]
+      [(eq? (send key-event get-key-code) '#\w) (set! direcao 'cima)]
+      [(eq? (send key-event get-key-code) '#\s) (set! direcao 'baixo)]
       [(eq? (send key-event get-key-code) '#\1) (set! IA #f) (send comeco stop) (send jogo start 100)]
       [(eq? (send key-event get-key-code) '#\2) (set! IA #t) (send comeco stop) (send jogo start 100)]
       [(eq? (send key-event get-key-code) '#\r) (set! IA #f) (send jogo stop) (restart) (pega-nome) (send comeco start 100)]))
@@ -170,7 +173,7 @@
   (cond [IA (set! direcao (anda-sozinho))])
   (draw-block dc (list-ref comida 0) (list-ref comida 1) "red") ; desenha a comida
   (cond [(encostou-bloco cobra comida) (cresce-cobra)] [else (move-cobra direcao)]) ; checa por colisão com a comida
-  (send dc draw-text (number->string pontos) (-(* BLOCKS_WIDTH BLOCK_SIZE) 310) 10)
+  (send dc draw-text (number->string pontos) (-(* BLOCKS_WIDTH BLOCK_SIZE) 350) 10)
   (for ([block cobra]) (
     if (eq? block (car cobra))
       (draw-block dc (list-ref block 0) (list-ref block 1) "black")
@@ -198,8 +201,7 @@
 
 ; fim-de-jogo: void.
 ; funcionamento: textos que aparecerem ao terminar do jogo.
-(define fim-de-jogo (lambda (),
-
+(define fim-de-jogo (lambda ()
   (send dc draw-text "Fim de jogo" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 90) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 80))
   (send dc draw-text "Jogador:" (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 90) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 60))
   (send dc draw-text nome-jogador (- (round (/ (* BLOCKS_WIDTH BLOCK_SIZE) 2)) 0) (- (round (/ (* BLOCKS_HEIGHT BLOCK_SIZE) 2)) 60))
