@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="Simulador MIPS"?>
+
+<zk>
+    <window id="winMips" use="controlador.MipsController" hflex="max" vflex="max">
+        <separator spacing="10px" />
+        <div hflex="max" vflex="max" align="left">
+            <grid hflex="max" vflex="0">
+                <rows>
+                    <row>
+                        <hbox > 
+                            <button label="Importar código" image="/img/txt.png" upload="true" height="30px" width="130px" onUpload="winMips.enviarArquivo(event.getMedia())" />   
+                            <space spacing="10px" />
+                            <div align="center"> 
+                                <label value="Arquivo importado:" style="font-weight:bold"/>   
+                                <space spacing="10px" />
+                                <label id="labelNomeArquivo" value="null" style="font-weight:bold"/>   
+                                <space spacing="20px" />
+                                <label value="Clock:"  style="font-weight:bold"/>   
+                                <space spacing="10px" />
+                                <label id="labelNumClock" style="font-weight:bold"/>   
+                                <space spacing="10px" />
+                                <label value="PC:"  style="font-weight:bold"/>   
+                                <space spacing="10px" />
+                                <label id="labelNumPc" style="font-weight:bold"/>   
+                                <space spacing="10px" />
+                                <button id="avancarClock" label="Avançar clock" image="/img/next.png"  height="30px" width="130px" onClick="winMips.avancarClock()" />   
+                                <space spacing="10px" />
+                                <button label="Resetar" image="/img/reset.png"  height="30px" width="130px" onClick="winMips.reset()" />   
+                                <space spacing="10px" />
+                                <space spacing="10px" />
+                                <button label="" image="/img/helpBlack.png"  height="30px" onClick="winMips.abrirAjuda()" />   
+                                <space spacing="10px" />
+                            </div>
+                        </hbox>
+                    </row>
+                    <row>
+                        <listbox id="lbRegistradores"  checkmark="false" height="60px" hflex="max" >
+                            <listhead>
+                                <listheader label="$r1" sort="false"/>
+                                <listheader label="$r2" sort="false"/>
+                                <listheader label="$r3" sort="false"/>
+                                <listheader label="$r4" sort="false"/>
+                                <listheader label="$r5" sort="false"/>
+                                <listheader label="$r6" sort="false"/>
+                                <listheader label="$r7" sort="false"/>
+                                <listheader label="$r8" sort="false"/>
+                                <listheader label="$r9" sort="false"/>
+                                <listheader label="$r10" sort="false"/>
+                                <listheader label="$r11" sort="false"/>
+                                <listheader label="$r12" sort="false"/>
+                                <listheader label="$r13" sort="false"/>
+                                <listheader label="$r14" sort="false"/>
+                                <listheader label="$r15" sort="false"/>
+                                <listheader label="$r16" sort="false"/>
+                                <listheader label="$r17" sort="false"/>
+                                <listheader label="$r18" sort="false"/>
+                                <listheader label="$r19" sort="false"/>
+                                <listheader label="$r20" sort="false"/>
+                                <listheader label="$r21" sort="false"/>
+                                <listheader label="$r22" sort="false"/>
+                                <listheader label="$r23" sort="false"/>
+                                <listheader label="$r24" sort="false"/>
+                                <listheader label="$r25" sort="false"/>
+                                <listheader label="$r26" sort="false"/>
+                                <listheader label="$r27" sort="false"/>
+                                <listheader label="$r28" sort="false"/>
+                                <listheader label="$r29" sort="false"/>
+                                <listheader label="$r30" sort="false"/>
+                                <listheader label="$r31" sort="false"/>
+                                <listheader label="$r32" sort="false"/>
+                            </listhead>
+                        </listbox>
+                    </row>
+                    <row>
+                        <listbox id="lbPipeline" height="200px" hflex="max">
+                            <listhead>
+                                <listheader label="Clock" sort="false"/>
+                                <listheader label="Busca" sort="false"/>
+                                <listheader label="Decodificação" sort="false"/>
+                                <listheader label="Execução" sort="false"/>
+                                <listheader label="Escrita" sort="false"/>
+                            </listhead>
+                        </listbox>
+                            
+                    </row>
+                    <row>
+                        <hlayout vflex="1">
+                            <vlayout hflex="1" vflex="1">
+                                <label style="font-weight:bold; color:#51504f; font-size:11pt" value="Dados do arquivo:" />
+                                <textbox id="arquivo" style="resize: none;" rows="30" readonly="true"  hflex="1" vflex="1"/>
+                            </vlayout>    
+                            <!--                            <listbox id="lbLinhas" checkmark="false" height="250px" width="422px">
+                                <listhead>
+                                    <listheader label="Dados do Arquivo" sort="false" />
+                                </listhead>
+                            </listbox>-->
+                            <listbox id="lbMemoria" hflex="1" vflex="1"  >
+                                <listhead>
+                                    <listheader label="Memória" sort="false"/>
+                                </listhead>
+                            </listbox>
+                            <listbox id="lbMapaPc" hflex="1" vflex="1">
+                                <listhead>
+                                    <listheader label="Mapa do arquivo" sort="false"/>
+                                </listhead>
+                            </listbox>
+                            <listbox id="lbMapaLabel" hflex="1" vflex="1">
+                                <listhead>
+                                    <listheader label="Mapa dos Labels" sort="false"/>
+                                </listhead>
+                            </listbox>
+                        </hlayout>
+                    </row>
+                </rows>
+            </grid>
+            <separator spacing="10px" />
+        </div>
+        
+        <window id="winAjuda" style="border: normal; background:#51504f;" hflex="auto" vflex="auto" position="center,middle" mode="highlighted" visible="false">
+            <caption label="Simulador MIPS - Ajuda" style="font-weight:bold;" />
+            <separator spacing="5px"/>
+            <space spacing="5px" />
+            
+            <div align="center"> 
+                <label value="GUIA DO USUÁRIO" style="font-weight:bold; font-size:12pt"/>
+            </div>
+            <separator spacing="15px"/>
+            <space spacing="5px" />
+            <label value="Registradores:" style="font-weight:bold; font-size:12pt"/>
+            <separator/>
+            <space spacing="5px" />
+            • O MIPS possui 32 registradores de uso geral, nomeados de $r1 até $r32, que serão usados para a manipulação de dados.
+            
+            <separator spacing="15px"/>
+            <space spacing="5px" />
+            <label value="Memória:" style="font-weight:bold; font-size:12pt"/>
+            <separator/>
+            <space spacing="5px" />
+            • Para esse simulador a memória é exclusiva para o armazenamento das instruções do programa, mas não de dados.
+            <separator spacing="15px"/>
+            <space spacing="5px" />
+            
+            <label value="Pipeline:" style="font-weight:bold; font-size:12pt"/>
+            <separator/>
+            <space spacing="5px" />
+            O pipeline simulado possui quatro estágios:
+            <separator/>
+            <space spacing="10px" />
+            <label value="• Busca de instrução:" style="font-weight:bold;"/>
+            a busca de instrução é responsável por buscar a próxima instrução da memória, a
+            próxima instrução é referenciada pelo valor do contador de programa (PC).
+            <separator/>
+            <space spacing="10px" />
+            <label value="• Decodificação: " style="font-weight:bold;"/>
+            a decodificação é responsável por determinar a operação da instrução e seus operandos
+            fontes e destino.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• Execução: " style="font-weight:bold;"/>
+            a execução realiza a operação.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• Escrita de resultado: " style="font-weight:bold;"/>
+            a última etapa escreve o resultado da etapa de execução de volta no registrador de
+            destino.
+            <separator/>
+            <space spacing="5px" />
+            Com exceção da etapa de execução, todas as outras etapas demoram um ciclo de clock para completar suas
+            tarefas.
+            <separator spacing="15px"/>
+            <space spacing="5px" />
+            
+            <label value="Instruções:" style="font-weight:bold; font-size:12pt"/>
+            <separator/>
+            <space spacing="5px" />
+            O simulador MIPS simula o seguinte conjunto de instruções:
+            <separator/>
+            <space spacing="10px" />
+            <label value="• move $r1, $r2: " style="font-weight:bold;"/>
+            copia o conteúdo do registrador r2 para r1. A execução demora 1 ciclo de clock.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• add $r1, $r2, $r3: " style="font-weight:bold;"/>
+            soma os valores de r2 e r3 e coloca o resultado em r1 (r1 = r2 + r3). A execução demora 2 ciclos de clock.            
+            <separator/>
+            <space spacing="10px" />
+            <label value="• addi $r1, $r2, imediato: " style="font-weight:bold;"/>
+            soma os valores de r2 e imediato (um valor inteiro) e coloca o resultado em r1 (r1 = r2 + imediato). A execução demora 1 ciclo de clock.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• sub $r1, $r2, $r3: " style="font-weight:bold;"/>
+            subtrai os valores de r2 e r3 e coloca o resultado em r1 (r1 = r2 - r3). A execução demora 2 ciclos de clock.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• subi $r1, $r2, imediato: " style="font-weight:bold;"/>
+            subtrai os valores de r2 e imediato (um valor inteiro) e coloca o resultado em r1 (r1 = r2 - imediato). A execução demora 1 ciclo de clock.
+            <separator/>
+            <space spacing="10px" />
+            <label value="• j label: " style="font-weight:bold;"/>
+            altera o fluxo de execução do programa para o label especificado. A execução demora 1 ciclo de clock.
+            <separator spacing="15px"/>
+            <space spacing="5px" />
+            
+            <label value="Funcionamento:" style="font-weight:bold; font-size:12pt"/>
+            <separator/>
+            <space spacing="5px" />
+            • Para a entrada de dados é necessário carregar um arquivo no formato texto (txt) contendo os comandos (o programa não aceita outro tipo de formato de arquivo).
+            <separator/>
+            <space spacing="5px" />
+            • Após carregado o arquivo bastar clicar no botão "Avançar Clock" para visualizar as instruçõe sendo executada.
+            <separator/>
+            <space spacing="5px" />
+            • Caso haja necessidade de recomeçar o processo, basta clicar no botão "Resetar" que o arquivo é carregado novamente e o programa reiniciado.
+            <separator/>
+            <space spacing="5px" />
+            • Quando todos os comandos forem processados aparecerá uma caixa de diálogo informando que tudo foi processado.
+            <separator/>
+            <space spacing="5px" />
+            <div align="center"> 
+                <button label="Fechar" onClick="winMips.fecharAjuda()" />   
+            </div>
+            <separator spacing="15px" />
+
+        </window>
+    </window>
+</zk>
