@@ -1,0 +1,5 @@
+system.ruby.network.average_flit_network_latency 12.716001
+system.ruby.network.average_hops 2.934465
+system.mem_ctrls03.bw_write::total 8446222
+system.mem_ctrls15.bw_read::total 19020905
+system.mem_ctrls00_0.averagePower 427.597002

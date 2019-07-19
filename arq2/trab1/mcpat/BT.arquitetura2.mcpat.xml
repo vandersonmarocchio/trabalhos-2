@@ -1,0 +1,1936 @@
+<?xml version="1.0" ?>
+<!-- McPAT interface-->
+<component id="root" name="root">
+	<component id="system" name="system">
+		<!--McPAT will skip the components if number is set to 0 -->
+		<param name="number_of_cores" value="8"/>
+		<param name="number_of_L1Directories" value="0"/>
+		<param name="number_of_L2Directories" value="0"/>
+		<param name="number_of_L2s" value="8"/> <!-- This number means how many L2 clusters in each cluster there can be multiple banks/ports -->
+		<param name="Private_L2" value ="1"/>
+		<param name="number_of_L3s" value="2"/> <!-- This number means how many L3 clusters -->
+		<param name="number_of_NoCs" value="1"/>
+		<param name="homogeneous_cores" value="0"/><!--1 means homo -->
+		<param name="homogeneous_L2s" value="0"/>
+		<param name="homogeneous_L1Directories" value="0"/>
+		<param name="homogeneous_L2Directories" value="0"/>
+		<param name="homogeneous_L3s" value="0"/>
+		<param name="homogeneous_ccs" value="1"/><!--cache coherece hardware -->
+		<param name="homogeneous_NoCs" value="1"/>
+		<param name="core_tech_node" value="45"/><!-- nm -->
+		<param name="target_core_clockrate" value='3330'/><!--MHz -->
+		<param name="temperature" value="330"/> <!-- Kelvin -->
+		<param name="number_cache_levels" value="3"/>
+		<param name="interconnect_projection_type" value="0"/><!--0: agressive wire technology; 1: conservative wire technology -->
+		<param name="device_type" value="0"/><!--0: HP(High Performance Type); 1: LSTP(Low standby power) 2: LOP (Low Operating Power)  -->
+		<param name="longer_channel_device" value="1"/><!-- 0 no use; 1 use when approperiate -->
+		<param name="power_gating" value="1"/><!-- 0 not enabled; 1 enabled -->
+		<param name="machine_bits" value="64"/>
+		<param name="virtual_address_width" value="64"/>
+		<param name="physical_address_width" value="52"/>
+		<param name="virtual_memory_page_size" value="4096"/>
+		<stat name="total_cycles" value="927173232"/>
+		<stat name="idle_cycles" value="0"/>
+		<stat name="busy_cycles"  value="927173232"/>
+			<!--This page size(B) is complete different from the page size in Main memo secction. this page size is the size of 
+			virtual memory from OS/Archi perspective; the page size in Main memo secction is the actuall physical line in a DRAM bank  -->
+		<!-- *********************** cores ******************* -->
+		<component id="system.core0" name="core0">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2429960927"/>
+			<stat name="int_instructions" value="1428828409"/>
+			<stat name="fp_instructions" value="981257710"/>
+			<stat name="branch_instructions" value="19874808"/>
+			<stat name="branch_mispredictions" value="50435"/>
+			<stat name="load_instructions" value="678763969"/>
+			<stat name="store_instructions" value="420254426"/>
+			<stat name="committed_instructions" value="2429960927"/>
+			<stat name="committed_int_instructions" value="1428828409"/>
+			<stat name="committed_fp_instructions" value="981257710"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="584763"/>
+			<stat name="busy_cycles"  value="926588468"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2498817278"/>
+			<stat name="ROB_writes" value="2498817278"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4859921854"/>
+			<stat name="rename_writes" value="2429960927"/>
+			<stat name="fp_rename_reads" value="1962515420"/>
+			<stat name="fp_rename_writes" value="981257710"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2429960927"/>
+			<stat name="inst_window_writes" value="2429960927"/>
+			<stat name="inst_window_wakeup_accesses" value="4859921854"/>
+			<stat name="fp_inst_window_reads" value="1214980463"/>
+			<stat name="fp_inst_window_writes" value="1214980463"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2429960927"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3644941390"/>
+			<stat name="float_regfile_reads" value="607490231"/>
+			<stat name="int_regfile_writes" value="1822470695"/>
+			<stat name="float_regfile_writes" value="303745115"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="121498046"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1497684760"/>
+			<stat name="fpu_accesses" value="981257710"/>
+			<stat name="mul_accesses" value="547626323"/>
+			<stat name="cdb_alu_accesses" value="1497684760"/>
+			<stat name="cdb_mul_accesses" value="547626323"/>
+			<stat name="cdb_fpu_accesses" value="981257710"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.260416"/>
+			<stat name="MUL_duty_cycle" value="0.590641"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.260416"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.590641"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core0.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core0.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="230438017"/>
+				<stat name="total_misses" value="686"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core0.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="230438017"/>
+				<stat name="read_misses" value="322022"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core0.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1099018395"/>
+				<stat name="total_misses" value="13596413"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core0.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="678763969"/>
+				<stat name="write_accesses" value="420254426"/>
+				<stat name="read_misses" value="9176478"/>
+				<stat name="write_misses" value="4419935"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core0.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="19874808"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core1" name="core1">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2435127097"/>
+			<stat name="int_instructions" value="1432256925"/>
+			<stat name="fp_instructions" value="981257582"/>
+			<stat name="branch_instructions" value="21612590"/>
+			<stat name="branch_mispredictions" value="31150"/>
+			<stat name="load_instructions" value="679164520"/>
+			<stat name="store_instructions" value="419663165"/>
+			<stat name="committed_instructions" value="2435127097"/>
+			<stat name="committed_int_instructions" value="1432256925"/>
+			<stat name="committed_fp_instructions" value="981257582"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="1705893"/>
+			<stat name="busy_cycles"  value="925467338"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2503658683"/>
+			<stat name="ROB_writes" value="2503658683"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4870254194"/>
+			<stat name="rename_writes" value="2435127097"/>
+			<stat name="fp_rename_reads" value="1962515164"/>
+			<stat name="fp_rename_writes" value="981257582"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2435127097"/>
+			<stat name="inst_window_writes" value="2435127097"/>
+			<stat name="inst_window_wakeup_accesses" value="4870254194"/>
+			<stat name="fp_inst_window_reads" value="1217563548"/>
+			<stat name="fp_inst_window_writes" value="1217563548"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2435127097"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3652690645"/>
+			<stat name="float_regfile_reads" value="608781774"/>
+			<stat name="int_regfile_writes" value="1826345322"/>
+			<stat name="float_regfile_writes" value="304390887"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="121756354"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1500788511"/>
+			<stat name="fpu_accesses" value="981257582"/>
+			<stat name="mul_accesses" value="547626214"/>
+			<stat name="cdb_alu_accesses" value="1500788511"/>
+			<stat name="cdb_mul_accesses" value="547626214"/>
+			<stat name="cdb_fpu_accesses" value="981257582"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.261344"/>
+			<stat name="MUL_duty_cycle" value="0.590641"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.261344"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.590641"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core1.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core1.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="230142429"/>
+				<stat name="total_misses" value="43"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core1.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="230142429"/>
+				<stat name="read_misses" value="262501"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core1.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1098827685"/>
+				<stat name="total_misses" value="13586327"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core1.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="679164520"/>
+				<stat name="write_accesses" value="419663165"/>
+				<stat name="read_misses" value="9135525"/>
+				<stat name="write_misses" value="4450802"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core1.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="21612590"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core2" name="core2">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2447854936"/>
+			<stat name="int_instructions" value="1442237950"/>
+			<stat name="fp_instructions" value="979057802"/>
+			<stat name="branch_instructions" value="26559184"/>
+			<stat name="branch_mispredictions" value="32760"/>
+			<stat name="load_instructions" value="679920678"/>
+			<stat name="store_instructions" value="419384948"/>
+			<stat name="committed_instructions" value="2447854936"/>
+			<stat name="committed_int_instructions" value="1442237950"/>
+			<stat name="committed_fp_instructions" value="979057802"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="2288185"/>
+			<stat name="busy_cycles"  value="924885046"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2516324494"/>
+			<stat name="ROB_writes" value="2516324494"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4895709872"/>
+			<stat name="rename_writes" value="2447854936"/>
+			<stat name="fp_rename_reads" value="1958115604"/>
+			<stat name="fp_rename_writes" value="979057802"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2447854936"/>
+			<stat name="inst_window_writes" value="2447854936"/>
+			<stat name="inst_window_wakeup_accesses" value="4895709872"/>
+			<stat name="fp_inst_window_reads" value="1223927468"/>
+			<stat name="fp_inst_window_writes" value="1223927468"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2447854936"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3671782404"/>
+			<stat name="float_regfile_reads" value="611963734"/>
+			<stat name="int_regfile_writes" value="1835891202"/>
+			<stat name="float_regfile_writes" value="305981867"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="122392746"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1510707508"/>
+			<stat name="fpu_accesses" value="979057802"/>
+			<stat name="mul_accesses" value="546648534"/>
+			<stat name="cdb_alu_accesses" value="1510707508"/>
+			<stat name="cdb_mul_accesses" value="546648534"/>
+			<stat name="cdb_fpu_accesses" value="979057802"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.264028"/>
+			<stat name="MUL_duty_cycle" value="0.589586"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.264028"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.589586"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core2.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core2.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="229736115"/>
+				<stat name="total_misses" value="43"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core2.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="229736115"/>
+				<stat name="read_misses" value="245128"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core2.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1099305626"/>
+				<stat name="total_misses" value="13271600"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core2.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="679920678"/>
+				<stat name="write_accesses" value="419384948"/>
+				<stat name="read_misses" value="8775745"/>
+				<stat name="write_misses" value="4495855"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core2.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="26559184"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core3" name="core3">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2462273462"/>
+			<stat name="int_instructions" value="1452536358"/>
+			<stat name="fp_instructions" value="979057802"/>
+			<stat name="branch_instructions" value="30679302"/>
+			<stat name="branch_mispredictions" value="31326"/>
+			<stat name="load_instructions" value="681973687"/>
+			<stat name="store_instructions" value="419382508"/>
+			<stat name="committed_instructions" value="2462273462"/>
+			<stat name="committed_int_instructions" value="1452536358"/>
+			<stat name="committed_fp_instructions" value="979057802"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="1708224"/>
+			<stat name="busy_cycles"  value="925465007"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2530743065"/>
+			<stat name="ROB_writes" value="2530743065"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4924546924"/>
+			<stat name="rename_writes" value="2462273462"/>
+			<stat name="fp_rename_reads" value="1958115604"/>
+			<stat name="fp_rename_writes" value="979057802"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2462273462"/>
+			<stat name="inst_window_writes" value="2462273462"/>
+			<stat name="inst_window_wakeup_accesses" value="4924546924"/>
+			<stat name="fp_inst_window_reads" value="1231136731"/>
+			<stat name="fp_inst_window_writes" value="1231136731"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2462273462"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3693410193"/>
+			<stat name="float_regfile_reads" value="615568365"/>
+			<stat name="int_regfile_writes" value="1846705096"/>
+			<stat name="float_regfile_writes" value="307784182"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="123113673"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1521005961"/>
+			<stat name="fpu_accesses" value="979057802"/>
+			<stat name="mul_accesses" value="546648534"/>
+			<stat name="cdb_alu_accesses" value="1521005961"/>
+			<stat name="cdb_mul_accesses" value="546648534"/>
+			<stat name="cdb_fpu_accesses" value="979057802"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.266620"/>
+			<stat name="MUL_duty_cycle" value="0.589586"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.266620"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.589586"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core3.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core3.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="229735629"/>
+				<stat name="total_misses" value="43"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core3.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="229735629"/>
+				<stat name="read_misses" value="255179"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core3.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1101356195"/>
+				<stat name="total_misses" value="13326413"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core3.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="681973687"/>
+				<stat name="write_accesses" value="419382508"/>
+				<stat name="read_misses" value="8741639"/>
+				<stat name="write_misses" value="4584774"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core3.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="30679302"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core4" name="core4">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2470919179"/>
+			<stat name="int_instructions" value="1458711955"/>
+			<stat name="fp_instructions" value="979057802"/>
+			<stat name="branch_instructions" value="33149422"/>
+			<stat name="branch_mispredictions" value="32963"/>
+			<stat name="load_instructions" value="683208817"/>
+			<stat name="store_instructions" value="419382607"/>
+			<stat name="committed_instructions" value="2470919179"/>
+			<stat name="committed_int_instructions" value="1458711955"/>
+			<stat name="committed_fp_instructions" value="979057802"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="2293395"/>
+			<stat name="busy_cycles"  value="924879836"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2539388753"/>
+			<stat name="ROB_writes" value="2539388753"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4941838358"/>
+			<stat name="rename_writes" value="2470919179"/>
+			<stat name="fp_rename_reads" value="1958115604"/>
+			<stat name="fp_rename_writes" value="979057802"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2470919179"/>
+			<stat name="inst_window_writes" value="2470919179"/>
+			<stat name="inst_window_wakeup_accesses" value="4941838358"/>
+			<stat name="fp_inst_window_reads" value="1235459589"/>
+			<stat name="fp_inst_window_writes" value="1235459589"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2470919179"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3706378768"/>
+			<stat name="float_regfile_reads" value="617729794"/>
+			<stat name="int_regfile_writes" value="1853189384"/>
+			<stat name="float_regfile_writes" value="308864897"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="123545958"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1527181529"/>
+			<stat name="fpu_accesses" value="979057802"/>
+			<stat name="mul_accesses" value="546648534"/>
+			<stat name="cdb_alu_accesses" value="1527181529"/>
+			<stat name="cdb_mul_accesses" value="546648534"/>
+			<stat name="cdb_fpu_accesses" value="979057802"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.268174"/>
+			<stat name="MUL_duty_cycle" value="0.589586"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.268174"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.589586"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core4.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core4.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="229735695"/>
+				<stat name="total_misses" value="43"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core4.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="229735695"/>
+				<stat name="read_misses" value="260458"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core4.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1102591424"/>
+				<stat name="total_misses" value="13256303"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core4.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="683208817"/>
+				<stat name="write_accesses" value="419382607"/>
+				<stat name="read_misses" value="8740459"/>
+				<stat name="write_misses" value="4515844"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core4.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="33149422"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core5" name="core5">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2465163342"/>
+			<stat name="int_instructions" value="1454601672"/>
+			<stat name="fp_instructions" value="979057802"/>
+			<stat name="branch_instructions" value="31503868"/>
+			<stat name="branch_mispredictions" value="31036"/>
+			<stat name="load_instructions" value="682393003"/>
+			<stat name="store_instructions" value="419385409"/>
+			<stat name="committed_instructions" value="2465163342"/>
+			<stat name="committed_int_instructions" value="1454601672"/>
+			<stat name="committed_fp_instructions" value="979057802"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="2175899"/>
+			<stat name="busy_cycles"  value="924997332"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2533632598"/>
+			<stat name="ROB_writes" value="2533632598"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="4930326684"/>
+			<stat name="rename_writes" value="2465163342"/>
+			<stat name="fp_rename_reads" value="1958115604"/>
+			<stat name="fp_rename_writes" value="979057802"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2465163342"/>
+			<stat name="inst_window_writes" value="2465163342"/>
+			<stat name="inst_window_wakeup_accesses" value="4930326684"/>
+			<stat name="fp_inst_window_reads" value="1232581671"/>
+			<stat name="fp_inst_window_writes" value="1232581671"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2465163342"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3697745013"/>
+			<stat name="float_regfile_reads" value="616290835"/>
+			<stat name="int_regfile_writes" value="1848872506"/>
+			<stat name="float_regfile_writes" value="308145417"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="123258167"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1523070928"/>
+			<stat name="fpu_accesses" value="979057802"/>
+			<stat name="mul_accesses" value="546648534"/>
+			<stat name="cdb_alu_accesses" value="1523070928"/>
+			<stat name="cdb_mul_accesses" value="546648534"/>
+			<stat name="cdb_fpu_accesses" value="979057802"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="1.000000"/>
+			<stat name="ALU_duty_cycle" value="0.267139"/>
+			<stat name="MUL_duty_cycle" value="0.589586"/>
+			<stat name="FPU_duty_cycle" value="1.000000"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.267139"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.589586"/>
+			<stat name="FPU_cdb_duty_cycle" value="1.000000"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core5.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core5.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="229735974"/>
+				<stat name="total_misses" value="43"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core5.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="229735974"/>
+				<stat name="read_misses" value="241959"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core5.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="1101778412"/>
+				<stat name="total_misses" value="13282622"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core5.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="682393003"/>
+				<stat name="write_accesses" value="419385409"/>
+				<stat name="read_misses" value="8753102"/>
+				<stat name="write_misses" value="4529520"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core5.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="31503868"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core6" name="core6">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2668155973"/>
+			<stat name="int_instructions" value="1700353503"/>
+			<stat name="fp_instructions" value="656251527"/>
+			<stat name="branch_instructions" value="311550943"/>
+			<stat name="branch_mispredictions" value="27621"/>
+			<stat name="load_instructions" value="602470705"/>
+			<stat name="store_instructions" value="280877341"/>
+			<stat name="committed_instructions" value="2668155973"/>
+			<stat name="committed_int_instructions" value="1700353503"/>
+			<stat name="committed_fp_instructions" value="656251527"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="2315818"/>
+			<stat name="busy_cycles"  value="924857413"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2714152551"/>
+			<stat name="ROB_writes" value="2714152551"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="5336311946"/>
+			<stat name="rename_writes" value="2668155973"/>
+			<stat name="fp_rename_reads" value="1312503054"/>
+			<stat name="fp_rename_writes" value="656251527"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2668155973"/>
+			<stat name="inst_window_writes" value="2668155973"/>
+			<stat name="inst_window_wakeup_accesses" value="5336311946"/>
+			<stat name="fp_inst_window_reads" value="1334077986"/>
+			<stat name="fp_inst_window_writes" value="1334077986"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2668155973"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="4002233959"/>
+			<stat name="float_regfile_reads" value="667038993"/>
+			<stat name="int_regfile_writes" value="2001116979"/>
+			<stat name="float_regfile_writes" value="333519496"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="133407798"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1746350081"/>
+			<stat name="fpu_accesses" value="656251527"/>
+			<stat name="mul_accesses" value="366590249"/>
+			<stat name="cdb_alu_accesses" value="1746350081"/>
+			<stat name="cdb_mul_accesses" value="366590249"/>
+			<stat name="cdb_fpu_accesses" value="656251527"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="0.952732"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="0.952732"/>
+			<stat name="ALU_duty_cycle" value="0.361656"/>
+			<stat name="MUL_duty_cycle" value="0.395385"/>
+			<stat name="FPU_duty_cycle" value="0.707798"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.361656"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.395385"/>
+			<stat name="FPU_cdb_duty_cycle" value="0.707798"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core6.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core6.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="153923755"/>
+				<stat name="total_misses" value="36"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core6.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="153923755"/>
+				<stat name="read_misses" value="209247"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core6.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="883348046"/>
+				<stat name="total_misses" value="9536187"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core6.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="602470705"/>
+				<stat name="write_accesses" value="280877341"/>
+				<stat name="read_misses" value="6241843"/>
+				<stat name="write_misses" value="3294344"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core6.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="311550943"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.core7" name="core7">
+		<!-- Core property -->
+			<param name="clock_rate" value='3330'/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="opt_local" value="1"/>
+			<param name="instruction_length" value="32"/>
+			<param name="opcode_width" value="16"/>
+			<!-- address width determins the tag_width in Cache, LSQ and buffers in cache controller 
+			default value is machine_bits, if not set --> 
+			<param name="machine_type" value="0"/><!-- 1 inorder; 0 OOO-->
+			<!-- inorder/OoO -->
+			<param name="number_hardware_threads" value="1"/>
+			<!-- number_instruction_fetch_ports(icache ports) is always 1 in single-thread processor,
+			it only may be more than one in SMT processors. BTB ports always equals to fetch ports since 
+			branch information in consective branch instructions in the same fetch group can be read out from BTB once.--> 
+			<param name="fetch_width" value="4"/>
+			<!-- fetch_width determins the size of cachelines of L1 cache block -->
+			<param name="number_instruction_fetch_ports" value="1"/>
+			<param name="decode_width" value="4"/>
+			<!-- decode_width determins the number of ports of the 
+			renaming table (both RAM and CAM) scheme -->
+			<param name="x86" value="1"/> 
+			<param name="micro_opcode_width" value="8"/> 
+			<param name="issue_width" value="4"/>
+			<param name="peak_issue_width" value="6"/>
+			<!-- issue_width determins the number of ports of Issue window and other logic 
+				as in the complexity effective proccessors paper; issue_width==dispatch_width -->
+			<param name="commit_width" value="4"/>
+			<!-- commit_width determins the number of ports of register files -->
+			<param name="fp_issue_width" value="2"/>
+			<param name="prediction_width" value="1"/>
+			<!-- number of branch instructions can be predicted simultannouesl-->
+			<!-- Current version of McPAT does not distinguish int and floating point pipelines
+			Theses parameters are reserved for future use.-->
+			<param name="pipelines_per_core" value="1,1"/>
+			<!--integer_pipeline and floating_pipelines, if the floating_pipelines is 0, then the pipeline is shared-->
+			<param name="pipeline_depth" value="14,14"/>
+			<!-- pipeline depth of int and fp, if pipeline is shared, the second number is the average cycles of fp ops -->
+			<!-- issue and exe unit-->
+			<param name="ALU_per_core" value="6"/>
+			<param name="MUL_per_core" value="1"/>
+			<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only
+			be processed by certain ALU. However, current McPAT does not consider this subtle difference -->
+			<param name="FPU_per_core" value="2"/>
+			<!-- buffer between IF and ID stage -->
+			<param name="instruction_buffer_size" value="32"/>
+			<!-- buffer between ID and sche/exe stage -->
+			<param name="decoded_stream_buffer_size" value="16"/>
+			<param name="instruction_window_scheme" value="1"/><!-- 0 PHYREG based, 1 RSBASED-->
+			<!-- McPAT support 2 types of OoO cores, RS based and physical reg based-->
+			<param name="instruction_window_size" value="36"/>
+			<param name="fp_instruction_window_size" value="0"/>
+			<!-- the instruction issue Q as in Alpha 21264; The RS as in Intel P6 -->
+			<param name="ROB_size" value="128"/>
+			<!-- each in-flight instruction has an entry in ROB -->
+			<!-- registers -->
+			<param name="archi_Regs_IRF_size" value="16"/>
+			<param name="archi_Regs_FRF_size" value="32"/>
+			<!--  if OoO processor, phy_reg number is needed for renaming logic, 
+			renaming logic is for both integer and floating point insts.  -->
+			<param name="phy_Regs_IRF_size" value="256"/>
+			<param name="phy_Regs_FRF_size" value="256"/>
+			<!-- rename logic -->
+			<param name="rename_scheme" value="0"/>
+			<!-- can be RAM based(0) or CAM based(1) rename scheme
+			RAM-based scheme will have free list, status table;
+			RAM-based scheme have the valid bit in the data field of the CAM 
+			both RAM and CAM need RAM-based checkpoint table, checkpoint_depth=# of in_flight instructions;
+			Detailed RAT Implementation see TR -->
+			<param name="register_windows_size" value="0"/>
+			<!-- how many windows in the windowed register file, sun processors;
+			no register windowing is used when this number is 0 -->
+			<!-- In OoO cores, loads and stores can be issued whether inorder(Pentium Pro) or (OoO)out-of-order(Alpha),
+			They will always try to exeute out-of-order though. -->
+			<param name="LSU_order" value="inorder"/>
+			<param name="store_buffer_size" value="96"/>
+			<!-- By default, in-order cores do not have load buffers -->
+			<param name="load_buffer_size" value="48"/>
+			<!-- number of ports refer to sustainable concurrent memory accesses -->
+			<param name="memory_ports" value="1"/>
+			<!-- max_allowed_in_flight_memo_instructions determins the # of ports of load and store buffer
+			as well as the ports of Dcache which is connected to LSU -->
+			<!-- dual-pumped Dcache can be used to save the extra read/write ports -->
+			<param name="RAS_size" value="64"/>
+			<!-- general stats, defines simulation periods;require total, idle, and busy cycles for senity check  -->
+			<!-- please note: if target architecture is X86, then all the instrucions refer to (fused) micro-ops -->
+			<stat name="total_instructions" value="2660425942"/>
+			<stat name="int_instructions" value="1694832067"/>
+			<stat name="fp_instructions" value="656251527"/>
+			<stat name="branch_instructions" value="309342348"/>
+			<stat name="branch_mispredictions" value="27788"/>
+			<stat name="load_instructions" value="601365596"/>
+			<stat name="store_instructions" value="280877148"/>
+			<stat name="committed_instructions" value="2660425942"/>
+			<stat name="committed_int_instructions" value="1694832067"/>
+			<stat name="committed_fp_instructions" value="656251527"/>
+			<stat name="total_cycles" value="927173232"/>
+			<stat name="idle_cycles" value="2077311"/>
+			<stat name="busy_cycles"  value="925095920"/>
+			<!-- instruction buffer stats -->
+			<!-- ROB stats, both RS and Phy based OoOs have ROB
+			performance simulator should capture the difference on accesses,
+			otherwise, McPAT has to guess based on number of commited instructions. -->
+			<stat name="ROB_reads" value="2706422514"/>
+			<stat name="ROB_writes" value="2706422514"/>
+			<!-- RAT accesses -->
+			<stat name="rename_reads" value="5320851884"/>
+			<stat name="rename_writes" value="2660425942"/>
+			<stat name="fp_rename_reads" value="1312503054"/>
+			<stat name="fp_rename_writes" value="656251527"/>
+			<!-- decode and rename stage use this, should be total ic - nop -->
+			<!-- Inst window stats -->
+			<stat name="inst_window_reads" value="2660425942"/>
+			<stat name="inst_window_writes" value="2660425942"/>
+			<stat name="inst_window_wakeup_accesses" value="5320851884"/>
+			<stat name="fp_inst_window_reads" value="1330212971"/>
+			<stat name="fp_inst_window_writes" value="1330212971"/>
+			<stat name="fp_inst_window_wakeup_accesses" value="2660425942"/>
+			<!--  RF accesses -->
+			<stat name="int_regfile_reads" value="3990638913"/>
+			<stat name="float_regfile_reads" value="665106485"/>
+			<stat name="int_regfile_writes" value="1995319456"/>
+			<stat name="float_regfile_writes" value="332553242"/>
+			<!-- accesses to the working reg -->
+			<stat name="function_calls" value="133021297"/>
+			<stat name="context_switches" value="0"/>
+			<!-- Number of Windowes switches (number of function calls and returns)-->
+			<!-- Alu stats by default, the processor has one FPU that includes the divider and 
+			 multiplier. The fpu accesses should include accesses to multiplier and divider  -->
+			<stat name="ialu_accesses" value="1740828639"/>
+			<stat name="fpu_accesses" value="656251527"/>
+			<stat name="mul_accesses" value="366590249"/>
+			<stat name="cdb_alu_accesses" value="1740828639"/>
+			<stat name="cdb_mul_accesses" value="366590249"/>
+			<stat name="cdb_fpu_accesses" value="656251527"/>
+			<!-- multiple cycle accesses should be counted multiple times, 
+			otherwise, McPAT can use internal counter for different floating point instructions 
+			to get final accesses. But that needs detailed info for floating point inst mix -->
+			<!--  currently the performance simulator should 
+			make sure all the numbers are final numbers, 
+			including the explicit read/write accesses, 
+			and the implicite accesses such as replacements and etc.
+			Future versions of McPAT may be able to reason the implicite access
+			based on param and stats of last level cache
+			The same rule applies to all cache access stats too!  -->
+			<stat name="IFU_duty_cycle" value="1.000000"/>
+			<stat name="LSU_duty_cycle" value="0.951540"/>
+			<stat name="MemManU_I_duty_cycle" value="1.000000"/>
+			<stat name="MemManU_D_duty_cycle" value="0.951540"/>
+			<stat name="ALU_duty_cycle" value="0.360266"/>
+			<stat name="MUL_duty_cycle" value="0.395385"/>
+			<stat name="FPU_duty_cycle" value="0.707798"/>
+			<stat name="ALU_cdb_duty_cycle" value="0.360266"/>
+			<stat name="MUL_cdb_duty_cycle" value="0.395385"/>
+			<stat name="FPU_cdb_duty_cycle" value="0.707798"/>
+			<param name="number_of_BPT" value="2"/>
+			<component id="system.core7.predictor" name="PBT">
+				<!-- branch predictor; tournament predictor see Alpha implementation -->
+				<param name="local_predictor_size" value="10,3"/>
+				<param name="local_predictor_entries" value="1024"/>
+				<param name="global_predictor_entries" value="4096"/>
+				<param name="global_predictor_bits" value="2"/>
+				<param name="chooser_predictor_entries" value="4096"/>
+				<param name="chooser_predictor_bits" value="2"/>
+			</component>
+			<component id="system.core7.itlb" name="itlb">
+				<param name="number_entries" value="128"/>
+				<stat name="total_accesses" value="153923753"/>
+				<stat name="total_misses" value="36"/>
+				<stat name="conflicts" value="0"/>
+				<!-- there is no write requests to itlb although writes happen to itlb after miss,
+				which is actually a replacement -->
+			</component>
+			<component id="system.core7.icache" name="icache">
+				<!-- there is no write requests to itlb although writes happen to it after miss, 
+				which is actually a replacement -->
+				<param name="icache_config" value="32768,64,4,1,1,4, 0, 1"/>
+				<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="buffer_sizes" value="16, 16, 16, 0"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="153923753"/>
+				<stat name="read_misses" value="204459"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core7.dtlb" name="dtlb">
+				<param name="number_entries" value="256"/>
+				<stat name="total_accesses" value="882242744"/>
+				<stat name="total_misses" value="9519380"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core7.dcache" name="dcache">
+				<!-- all the buffer related are optional -->
+				<param name="dcache_config" value="32768,64,8,2,10,40, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="601365596"/>
+				<stat name="write_accesses" value="280877148"/>
+				<stat name="read_misses" value="6233497"/>
+				<stat name="write_misses" value="3285883"/>
+				<stat name="conflicts" value="0"/>
+			</component>
+			<component id="system.core7.BTB" name="BTB">
+				<!-- all the buffer related are optional -->
+				<param name="BTB_config" value="18944,8,4,1, 1,3"/>
+				<stat name="read_accesses" value="309342348"/>
+				<stat name="write_accesses" value="0"/>
+				<!-- the parameters are capacity,block_width,associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+			</component>
+	</component>
+			<!--**********************************************************************-->
+		<component id="system.L20" name="L20">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="9498500"/>
+				<stat name="write_accesses" value="4419935"/>
+				<stat name="read_misses" value="3347692"/>
+				<stat name="write_misses" value="922502"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.015012"/>
+		</component>
+		<component id="system.L21" name="L21">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="9398026"/>
+				<stat name="write_accesses" value="4450802"/>
+				<stat name="read_misses" value="3191013"/>
+				<stat name="write_misses" value="808127"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014937"/>
+		</component>
+		<component id="system.L22" name="L22">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="9020873"/>
+				<stat name="write_accesses" value="4495855"/>
+				<stat name="read_misses" value="3041055"/>
+				<stat name="write_misses" value="833406"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014578"/>
+		</component>
+		<component id="system.L23" name="L23">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="8996818"/>
+				<stat name="write_accesses" value="4584774"/>
+				<stat name="read_misses" value="2774231"/>
+				<stat name="write_misses" value="941240"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014648"/>
+		</component>
+		<component id="system.L24" name="L24">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="9000917"/>
+				<stat name="write_accesses" value="4515844"/>
+				<stat name="read_misses" value="2903096"/>
+				<stat name="write_misses" value="937836"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014578"/>
+		</component>
+		<component id="system.L25" name="L25">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="8995061"/>
+				<stat name="write_accesses" value="4529520"/>
+				<stat name="read_misses" value="3003394"/>
+				<stat name="write_misses" value="905011"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014587"/>
+		</component>
+		<component id="system.L26" name="L26">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="6451090"/>
+				<stat name="write_accesses" value="3294344"/>
+				<stat name="read_misses" value="1951613"/>
+				<stat name="write_misses" value="826674"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.010511"/>
+		</component>
+		<component id="system.L27" name="L27">
+				<param name="L2_config" value="262144,64,8,8,1,8, 0, 1"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<stat name="read_accesses" value="6437956"/>
+				<stat name="write_accesses" value="3285883"/>
+				<stat name="read_misses" value="2171163"/>
+				<stat name="write_misses" value="839394"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.010488"/>
+		</component>
+		<component id="system.L30" name="L30">
+				<param name="L3_config" value="8388608,64,16, 16, 16, 30,1"/>
+		<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="12353991"/>
+				<stat name="write_accesses" value="3505275"/>
+				<stat name="read_misses" value="1708314"/>
+				<stat name="write_misses" value="1570811"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.017105"/>
+		</component>
+		<component id="system.L31" name="L31">
+				<param name="L3_config" value="8388608,64,16, 16, 16, 30,1"/>
+		<!-- the parameters are capacity,block_width, associativity,bank, throughput w.r.t. core clock, latency w.r.t. core clock,-->
+				<param name="clockrate" value="3330"/>
+				<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+				<param name="ports" value="1,1,1"/>
+				<param name="device_type" value="0"/>
+				<param name="buffer_sizes" value="16, 16, 16, 16"/>
+				<!-- cache controller buffer sizes: miss_buffer_size(MSHR),fill_buffer_size,prefetch_buffer_size,wb_buffer_size-->
+				<stat name="read_accesses" value="10029266"/>
+				<stat name="write_accesses" value="3508915"/>
+				<stat name="read_misses" value="1471934"/>
+				<stat name="write_misses" value="1743480"/>
+				<stat name="conflicts" value="0"/>
+				<stat name="duty_cycle" value="0.014602"/>
+		</component>
+			<!--**********************************************************************-->
+		<component id="system.NoC0" name="noc0">
+			<param name="clockrate" value="3330"/>
+			<param name="vdd" value="1.200000"/><!-- 0 means using ITRS default vdd -->
+			<param name="type" value="0"/>
+			<!--0:bus, 1:NoC , for bus no matter how many nodes sharing the bus at each time only one node can send req -->
+			<param name="horizontal_nodes" value="1"/>
+			<param name="vertical_nodes" value="1"/>
+			<param name="has_global_link" value="0"/>
+			<param name="link_throughput" value="1"/>
+			<param name="link_latency" value="1"/>
+			<param name="input_ports" value="1"/>
+			<param name="output_ports" value="1"/>
+			<param name="flit_bits" value="256"/>
+			<param name="chip_coverage" value="1"/>
+			<param name="link_routing_over_percentage" value="0.5"/>
+			<stat name="total_accesses" value="12928960"/>
+			<stat name="duty_cycle" value="0.131322"/>
+		</component>
+			<!--**********************************************************************-->
+		<component id="system.mc" name="mc">
+			<!-- current version of McPAT uses published values for base parameters of memory controller
+			improvments on MC will be added in later versions. -->
+			<param name="mc_clock" value="200"/><!--MHz-->
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<param name="peak_transfer_rate" value="3200"/>
+			<param name="block_size" value="64"/><!--B-->
+			<param name="number_mcs" value="0"/>
+			<!-- current McPAT only supports homogeneous memory controllers -->
+			<param name="memory_channels_per_mc" value="1"/>
+			<param name="number_ranks" value="2"/>
+			<param name="withPHY" value="0"/>
+			<param name="req_window_size_per_channel" value="32"/>
+			<param name="IO_buffer_size_per_channel" value="32"/>
+			<param name="databus_width" value="128"/>
+			<param name="addressbus_width" value="51"/>
+			<!-- McPAT will add the control bus width to the addressbus width automatically -->
+			<stat name="memory_accesses" value="26818"/>
+			<stat name="memory_reads" value="26818"/>
+			<stat name="memory_writes" value="0"/>
+			<!-- McPAT does not track individual mc, instead, it takes the total accesses and calculate 
+			the average power per MC or per channel. This is sufficent for most application. 
+			Further trackdown can be easily added in later versions. -->
+		</component>
+		<component id="system.niu" name="niu">
+			<param name="type" value="0"/> <!-- 1: low power; 0 high performance -->
+			<param name="clockrate" value="350"/>
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<param name="number_units" value="0"/> <!-- unlike PCIe and memory controllers, each Ethernet controller only have one port -->
+			<stat name="duty_cycle" value="1.0"/> <!-- achievable max load <= 1.0 -->
+			<stat name="total_load_perc" value="0.7"/> <!-- ratio of total achived load to total achivable bandwidth  -->
+		</component>
+		<component id="system.pcie" name="pcie">
+			<!-- On chip PCIe controller, including Phy-->
+			<param name="type" value="0"/> <!-- 1: low power; 0 high performance -->
+			<param name="withPHY" value="1"/>
+			<param name="clockrate" value="350"/>
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<param name="number_units" value="0"/>
+			<param name="num_channels" value="8"/> <!-- 2 ,4 ,8 ,16 ,32 -->
+			<stat name="duty_cycle" value="1.0"/> <!-- achievable max load <= 1.0 -->
+			<stat name="total_load_perc" value="0.7"/> <!-- Percentage of total achived load to total achivable bandwidth  -->
+		</component>
+		<component id="system.flashc" name="flashc">
+			<param name="number_flashcs" value="0"/>
+			<param name="type" value="1"/> <!-- 1: low power; 0 high performance -->
+			<param name="withPHY" value="1"/>
+			<param name="peak_transfer_rate" value="200"/><!--Per controller sustainable reak rate MB/S -->
+			<param name="vdd" value="0"/><!-- 0 means using ITRS default vdd -->
+			<stat name="duty_cycle" value="1.0"/> <!-- achievable max load <= 1.0 -->
+			<stat name="total_load_perc" value="0.7"/> <!-- Percentage of total achived load to total achivable bandwidth  -->
+		</component>
+		<!--**********************************************************************-->
+	</component>
+</component>

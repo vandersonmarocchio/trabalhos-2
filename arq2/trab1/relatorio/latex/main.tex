@@ -1,0 +1,188 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+
+\usepackage{float}
+
+%\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}  
+
+     
+\sloppy
+
+\title{Avaliação de algoritmos de substituição da cache utilizando o Simulador Sniper}
+
+\author{Diogo Alves de Almeida RA: 95108\inst{1}}
+
+
+\address{Centro de Tecnologia \\ Departamento de Informática -- Universidade Estadual de Maringá (UEM)\\
+CEP 87020-900 -- Maringá -- Paraná -- Brasil}
+
+
+\begin{document} 
+
+\maketitle
+
+\begin{resumo}
+Os algoritmos de substituição de cache ou políticas de substituição de cache otimizam instruções ou algoritmos que um programa de computador ou uma estrutura mantida por hardware pode utilizar para gerenciar um cache de informações armazenadas no computador. O armazenamento em cache melhora o desempenho mantendo itens de dados recentes ou usados com frequência em locais de memória que são mais rápidos ou computacionalmente mais baratos para acessar do que os armazenamentos de memória normais. O objetivo desse trabalho é analisar duas políticas de substituição de cache, NMRU e LRU, contidas em duas arquiteturas superescalares diferentes simulan-
+
+do vários programas através do simulador multinúcleo Sniper constando que o algoritmo NMRU se sobressai em algoritmos em que há um padrão de acesso das caches.
+\end{resumo}
+
+\begin{abstract}
+Cache replacement algorithms or cache replacement policies optimize instructions or algorithms that a computer program or a hardware-maintained framework can use to manage a cache of information stored on the computer. Caching improves performance by keeping recent or frequently used data items in memory locations that are faster or computationally cheaper to access than normal memory stores. The objective of this work is to analyze two cache replacement policies (NMRU and LRU) contained in two different superscalar architectures simulating various programs through the multi-core Sniper simulator, verified that the NMRU algorithm excels in algorithms in which there is a cache access pattern.
+\end{abstract}
+
+\section{Introdução}
+O paralelismo de serviços é um dos temas mais abordados quando falamos de processadores e sua melhora de desempenho. A técnica mais utilizada para aumentar esse desempenho é o \textit{pipeline}, que consiste em aproveitar a maior parte possível do processador que não esteja sendo utilizada. De modo geral, é uma técnica que permite que a realização da busca de uma ou mais instruções além da próxima a ser executada, logo, assim que uma instrução termina o primeiro estágio e parte para o segundo, a próxima instrução já ocupa o primeiro estágio. Porém, o paralelismo em arquiteturas superescalares é limitado pois além das dependências de controle, provocadas pelos desvios, também temos as dependências verdadeiras (também conhecidas como dependências de dados), para resolver essas dependências é usada a previsão de desvio.
+
+Uma outra técnica para melhorarmos os desempenhos obtidos, são as políticas de substituição de cache. O armazenamento em cache melhora o desempenho mantendo itens de dados recentes ou usados com frequência em locais de memória que são mais rápidos ou computacionalmente mais baratos para acessar do que os armazenamentos de memória normais. Quando a cache está cheia, o algoritmo deve escolher quais itens ele descartará para que novos dados entrem. As métricas mais importantes de se avaliar uma cache são: taxa de acertos e latência. Há também vários fatores secundários que afetam o desempenho da cache \cite{ALAN}.
+
+Com isso, neste trabalho temos como objetivo simular alguns algoritmos e avaliar duas arquitetura multinúcleo diferentes, utilizando duas políticas de substituição de cache diferentes, sendo elas \textit{NMRU} e \textit{LRU}, e comparar seus resultados, afim de verificar qual obtém melhor resultado. 
+
+A Seção \ref{sec:sniper} abordará o simulador sniper, explicando suas definições e quais suas funcionalidades. As configurações arquiteturais a serem simuladas serão descritas na seção \ref{sec:arqsi}. Na seção \ref{sec:result}, serão expostos e discutidos os resultados das simulações, e por fim, na seção \ref{sec:conc}, é feita uma conclusão do trabalho.
+
+\section{O Simulador Sniper} \label{sec:sniper}
+O Sniper é um simulador x86 paralelo, de alta velocidade e preciso. Este simulador multinúcleo baseia-se no modelo de núcleo em intervalos e na infraestrutura de simulação \textit{Graphite}, permitindo uma simulação rápida e precisa. Ele também permite que se perca velocidade e precisão em troca de opções flexíveis para fins de exploração de diferentes arquiteturas \textit{multinúcleos} homogêneas e heterogêneas \cite{sniper}.
+
+O simulador Sniper permite a realização de simulações em alta velocidade quando comparado com outros simuladores existentes. A principal característica do simulador é seu modelo de núcleo, que é baseado em simulações em intervalos, que lhe concede maior velocidade. A simulação em intervalos aumenta os níveis de abstração na simulação arquitetural, se utilizando de 'jumps' entre os eventos de miss, chamados de intervalos. O Sniper foi validado sendo comparado com sistemas Intel Core 2 e Nehalem, e provê uma performance média de predição de erros com 25\% da velocidade de simulação de vários outros simuladores MIPS.
+
+O simulador e o modelo de núcleos em intervalos são úteis para estudos de nível de núcleo e de núcleos que exigem mais detalhes. Com isso, o modelo permite a geração de pilhas de CPI, que mostram o número de ciclos perdidos devido a diferentes características do sistema, como a política de substituição de cache ou a previsão de desvio, e leva a um melhor entendimento dos efeitos causados em seus componentes e seu desempenho. Isso amplia o uso do Sniper para a caracterização de aplicativos e o design do conjunto de hardware / software.
+
+Segundo \cite{sniper}, além da características mencionadas acima, temos abaixo, algumas outras que foram recém adicionadas:
+\begin{itemize}
+    \item Modelo de núcleo por intervalo
+    \item Suporta modelos de núcleos SMT, em ordem e fora de ordem
+    \item Suporta aplicações multi-thread
+    \item Suporta pilhas CPI e visualização avançada para ter maior discernimento nos ci-
+    
+    clos perdidos
+    \item Simulador paralelo e multi-threads
+    \item Suporte para aplicação de multi-programas e multi-threads (x86 e x86-64, SSE2) 
+    \item Suporte completo para DVFS
+    \item Caches privadas e compartilhadas
+    \item Prefetchers
+    \item Suporte a agendamento
+    \item Suporte para configuração heterogênea
+    \item Predição de desvio moderno
+    \item Integração com McPAT
+    \item Suporte A aplicações paralelas usando pthreads, OpenMP, TBB e OpenCL
+\end{itemize}
+
+\section{Arquiteturas Simuladas} \label{sec:arqsi}
+Para as simulações foram utilizadas duas arquiteturas parecidas que se diferenciam apenas pelo algoritmo de atualização da cache utilizado. As configurações oferecidas foram baseadas no processador Xeon X5550 Gainestown.
+\begin{itemize}
+    \item Arquitetura 1:
+    \begin{itemize}
+        \item Clock: 3.33 GHz
+        \item Previsão de desvio: pentium\_m
+        \item Algoritmo de atualização de cache: nmru
+        \item DRAM: normal
+    \end{itemize}
+    
+    \item Arquitetura 2:
+    \begin{itemize}
+        \item Clock: 3.33 GHz
+        \item Previsão de desvio: pentium\_m
+        \item Algoritmo de atualização de cache: lru
+        \item DRAM: normal
+    \end{itemize}
+\end{itemize}
+
+
+Na primeira arquitetura foi utilizada a política de substituição de cache NMRU (\textit{Not Most Recently Used}) que é uma aproximação mais fácil de implementação do LRU (\textit{Least recently used}). 
+
+A memória cache é dividida em três níveis diferentes: o L1, L2, e L3. O mais próximo ao processador é a L1, sendo também a menor, enquanto a L3 é a mais distante e maior. Enquanto L2 e L3 são memórias únicas, o nível L1 é dividido em memória de instrução e memória de dados. Assim, o processador vai direto à memória de instrução, se estiver buscando uma instrução, ou vai direto à memória de dados, se estiver buscando um dado. Isso agiliza ainda mais o processador de busca. Caso o processador não encontre a informação que precisa em nenhum nível da cache, ele vai até a memoria RAM.
+
+Para entendermos como funciona o NMRU devemos saber como funciona o MRU (\textit{Most Recently Used}). Este algoritmo descarta o elemento que foi utilizado mais recentemente, sendo útil nas situações em que quanto mais antigo o item é, mais provável que ele seja acessado.\cite{mru} Portanto, como o NMRU é a negação desse algoritmo, o algoritmo rastreia o item que é o mais recente usado e no descarte, ele escolhe um do bloco de itens que não contém o mais recente usado \cite{nmru}.
+
+Já o LRU descarta o item usado menos recentemente, porém é necessário ser mantido um bit com a "idade" de cada elemento para saber qual elemento deverá ser eliminado nos próximos ciclos, o que torna um pouco caro se quisermos ter certeza de que o algoritmo sempre descartará o elemento menos recente.
+
+A diferença dos dois é que enquanto o NMRU é necessário ser ratreado apenas um elemento da cache, no LRU é necessário restrear todos para que o algoritmo funcione corretamente. 
+
+Para as duas arquiteturas temos o clock como 3.33GHz, o clock é a frequência na qual a CPU realiza os cálculos, normalmente ele é encontrado descrito em Gigahertz (GHz). O tipo de DRAM (\textit{Dynamic Random Access Memory}) utilizada nesta simulação é a normal. A DRAM precisa que a informação seja atualizada o tempo todo para que permaneça armazenada. Com isso, esse tipo de RAM gasta mais energia se comparado com a SRAM. 
+
+Por fim, o algoritmo de previsão de desvio que foi escolhido foi o \textit{pentium\_m}, este usa duas extensões para previsão de desvios. Um detector de loops captura e armazena contagens de loops em um conjunto de contadores em hardware. Isso produz predições precisas para \textit{loops} for. Uma segunda extensão é um esquema adaptativo para desvios indiretos, projetado para desvios dependentes de dados. Para desvios indiretos preditos de forma errada, são alocadas entradas novas correspondentes ao conteúdo corrente de registradores de global \textit{history}. Desta forma o global \textit{history} pode ser usado para escolher entre várias instâncias de preditores para desvios indiretos dependentes de dados. \cite{gui}
+
+\section{Resultados e Discussão} \label{sec:result}
+Foi utilizado o simulador Sniper para executar 10 programas retirados do benchmark NPB-OMP da NASA. Cada programa foi executado duas vezes, uma com cada arquitetura descrita na seção \ref{sec:arqsi}. Os programas em paralelo utilizados foram:  BT, CG, DC, EP, FT, IS, LU, MG, SP e UA, todos executados com a entrada W.
+
+Foram analisados os 4 tipos de cache (L1-I, L1-D, L2 e L3) e sua taxa de Miss Rate da arquitetura 2 em relação a arquitetura 1 como podemos ver nas figuras \ref{fig:figura1}, \ref{fig:figura2}, \ref{fig:figura3} e \ref{fig:figura4}. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/cacheL1_D.png}
+\caption{Gráfico do aumento da taxa de Miss Rate da Cache L1 D em relação a Arquitetura 1}
+\label{fig:figura1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/cacheL1_I.png}
+\caption{Gráfico do aumento da taxa de Miss Rate da Cache L1 I em relação a Arquitetura 1}
+\label{fig:figura2}
+\end{figure}
+
+Como podemos ver na Figura \ref{fig:figura1}, a cache L1-D teve uma taxa mais baixa de miss na arquitetura 2 com a política de substituição de cache NMRU comparada com a arquitetura 1 com a LRU, provavelmente devido as instruções do algoritmo terem um padrão de acesso fazendo com que a busca pelos dados tenha diminuído o miss. Porém, na Figura \ref{fig:figura2} temos que a cache L1-I teve uma taxa maior de miss em relação a arquitetura 1 sendo causado muito provavelmente pelo fato do algoritmo não ter um padrão de acesso fazendo com que a busca tenha uma eficiência um pouco pior, isso acontece quando há uma instrução de loop por exemplo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/cacheL2.png}
+\caption{Gráfico do aumento da taxa de Miss Rate da Cache L2 em relação a Arquitetura 1}
+\label{fig:figura3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/cacheL3.png}
+\caption{Gráfico do aumento da taxa de Miss Rate da Cache L3 em relação a Arquitetura 1}
+\label{fig:figura4}
+\end{figure}
+
+Devido a alternância de ganho das políticas em relação a cache L2 visto na Figura \ref{fig:figura3} percebemos que o padrão de acesso aos dados proposto pelo algoritmo é de grande significância para definir qual política de substituição se sobressai. Já na L3 temos um ganho da política LRU como podemos ver na Figura \ref{fig:figura4} tendo em vista que a cache L3 é a maior delas e como o algoritmo tem a informação da "idade" de todos os dados, a chance de acerto nessa cache é muito maior pois provavelmente o dado ainda estará na cache enquanto o NMRU tem a informação apenas o dado mais recente utilizado.
+
+Também foi analisado a taxa de aumento de instruções por clock e o pico de energia da arquitetura 2 em relação a arquitetura 1 como podemos ver nas Figuras \ref{fig:figura5} e \ref{fig:figura6}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/ipc.png}
+\caption{Gráfico do aumento do IPC em relação a Arquitetura 1}
+\label{fig:figura5}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{imagens/power.png}
+\caption{Gráfico do aumento do Peak Power em relação a Arquitetura 1}
+\label{fig:figura6}
+\end{figure}
+
+A taxa de aumento de instruções por clock são relativamente pequenas comparado ao número de instruções que foram executadas nas simulações, portanto, para ter um desempenho melhor e assim ter uma análise mais aprofundada seria necessário alterar outras configurações da arquitetura. A mesma situação se encaixa na análise do pico de energia que teve uma diferença menor que 2\% em todos os programas,
+
+\section{Conclusão}  \label{sec:conc}
+
+Para melhorarmos o desempenho do paralelismo em arquiteturas superescalares a políticas de substituição de cache pode ser um dos métodos a ser estudados. O armazenamento em cache melhora o desempenho mantendo itens de dados recentes ou usados com frequência em locais de memória que são mais rápidos ou computacionalmente mais baratos para acessar do que os armazenamentos de memória normais. Quando a cache está cheia, o algoritmo deve escolher quais itens ele descartará para que novos dados entrem. As métricas mais importantes de se avaliar uma cache são: taxa de acertos e latência. Há também vários fatores secundários que afetam o desempenho da cache. \cite{ALAN}
+
+Este trabalho teve o objeto de analisar duas arquiteturas com política de substituição de cache diferentes (NMRU para a arquitetura 1 e LRU para a arquitetura 2) e a partir de simulações pelo simulador Sniper dos 10 programas retirados de benchmark NPB-OMP da NASA (BT, CG, DC, EP, FT, IS, LU, MG, SP e UA, todos executados com a entrada W) poder analisar qual teve melhor desempenho em relação a taxa de miss de acessos como também o pico de energia gasto e a quantidade de instruções por clock que cada arquitetura obteve.
+
+Foi concluído que para algoritmos com padrão de acesso os resultados podem ser melhores utilizando o NMRU enquanto quando não há um padrão de acesso a LRU se sobressai. Vimos também que os resultados da taxa de instruções por clock e o pico de energia das execuções tiveram uma diferença insignificante tornando-os inconclusivos tendo a necessidade de alteração de outros aspectos da arquitetura para análises futuras.
+
+\bibliographystyle{sbc}
+\bibliography{main.bib}
+\end{document}
