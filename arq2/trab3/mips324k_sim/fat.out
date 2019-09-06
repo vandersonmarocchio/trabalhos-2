@@ -1,0 +1,1818 @@
+Programa:
+	    lui $a0, 7
+	
+	    lui $t1, 1
+	    beq $a0, $zero, END
+	    beq $a0, $t1, END
+	
+	    lui $t2, 1
+	
+	LOOP:
+	    addi $t2, $t2, 1
+	    mul $t1, $t1, $t2
+	    beq $a0, $t2, ENDLOOP
+	    j LOOP
+	
+	ENDLOOP:
+	    addi $a0, $t1, 0
+	
+	END:
+	    addi $v0, $a0, 0
+
+Binário:
+	3C040007
+	3C090001
+	10800008
+	10890007
+	3C0A0001
+	214A0001
+	712A4802
+	108A0002
+	8000005
+	21240000
+	20820000
+
+Previsão:
+	Total de saltos: 	08 
+	Acertos: 			07 (87.50%) 
+	Erros: 				01 (12.50%) 
+
+Ciclos:
+	86 ciclos
+
+Ciclo 0:
+ 	Busca:
+		    lui $a0, 7
+		    lui $t1, 1
+		    beq $a0, $zero, END
+		    beq $a0, $t1, END
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 1:
+ 	Busca:
+
+ 	Emição:
+		    lui $a0, 7
+
+	Executando:
+		    lui $a0, 7
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 2:
+ 	Busca:
+
+ 	Emição:
+		    lui $t1, 1
+
+	Executando:
+		    lui $t1, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    lui $a0, 7
+
+ 	Efetivando:
+
+ 	Bypassing:
+			a0
+
+ Ciclo 3:
+ 	Busca:
+
+ 	Emição:
+		    beq $a0, $zero, END
+
+	Executando:
+		    beq $a0, $zero, END
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    lui $t1, 1
+
+ 	Efetivando:
+		    lui $a0, 7
+
+ 	Bypassing:
+			t1
+
+ Ciclo 4:
+ 	Busca:
+		    lui $t2, 1
+		    addi $t2, $t2, 1
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Emição:
+		    beq $a0, $t1, END
+
+	Executando:
+		    beq $a0, $t1, END
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $zero, END
+
+ 	Efetivando:
+		    lui $t1, 1
+
+ 	Bypassing:
+
+ Ciclo 5:
+ 	Busca:
+
+ 	Emição:
+		    lui $t2, 1
+
+	Executando:
+		    lui $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t1, END
+
+ 	Efetivando:
+		    beq $a0, $zero, END
+
+ 	Bypassing:
+
+ Ciclo 6:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    lui $t2, 1
+
+ 	Efetivando:
+		    beq $a0, $t1, END
+
+ 	Bypassing:
+			t2
+
+ Ciclo 7:
+ 	Busca:
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    lui $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 8:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 9:
+ 	Busca:
+		    j LOOP
+		    addi $t2, $t2, 1
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+		    j LOOP
+		    addi $t2, $t2, 1
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 10:
+ 	Busca:
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 11:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 12:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 13:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 14:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 15:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 16:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 17:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 18:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 19:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 20:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+			t2
+
+ Ciclo 21:
+ 	Busca:
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+			t2
+
+ Ciclo 22:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			t2
+
+ Ciclo 23:
+ 	Busca:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+		    j LOOP
+		    addi $t2, $t2, 1
+		    mul $t1, $t1, $t2
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 24:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 25:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 26:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 27:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 28:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 29:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 30:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 31:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 32:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+			t2
+
+ Ciclo 33:
+ 	Busca:
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+			t2
+
+ Ciclo 34:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			t2
+
+ Ciclo 35:
+ 	Busca:
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 36:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 37:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 38:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 39:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 40:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 41:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 42:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 43:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 44:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+			t2
+
+ Ciclo 45:
+ 	Busca:
+		    beq $a0, $t2, ENDLOOP
+		    j LOOP
+		    addi $t2, $t2, 1
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+			t2
+
+ Ciclo 46:
+ 	Busca:
+
+ 	Emição:
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			t2
+
+ Ciclo 47:
+ 	Busca:
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 48:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 49:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 50:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 51:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 52:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 53:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 54:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 55:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 56:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+			t2
+
+ Ciclo 57:
+ 	Busca:
+		    j LOOP
+		    addi $t2, $t2, 1
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+		    j LOOP
+		    addi $t2, $t2, 1
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+			t2
+
+ Ciclo 58:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			t2
+
+ Ciclo 59:
+ 	Busca:
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 60:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 61:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 62:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 63:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 64:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 65:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 66:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 67:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t2
+
+ Ciclo 68:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+			t2
+
+ Ciclo 69:
+ 	Busca:
+
+ 	Emição:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    beq $a0, $t2, ENDLOOP
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+			t2
+
+ Ciclo 70:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			t2
+
+ Ciclo 71:
+ 	Busca:
+		    addi $a0, $t1, 0
+		    addi $v0, $a0, 0
+
+ 	Emição:
+		    addi $t2, $t2, 1
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    addi $t2, $t2, 1
+
+ 	Bypassing:
+
+ Ciclo 72:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+		    addi $t2, $t2, 1
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 73:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $t2, $t2, 1
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 74:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 75:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 76:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 77:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 78:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 79:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    mul $t1, $t1, $t2
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+		    mul $t1, $t1, $t2
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+
+ Ciclo 80:
+ 	Busca:
+
+ 	Emição:
+		    addi $a0, $t1, 0
+
+	Executando:
+		    addi $a0, $t1, 0
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    mul $t1, $t1, $t2
+
+ 	Efetivando:
+
+ 	Bypassing:
+			t1
+
+ Ciclo 81:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    addi $a0, $t1, 0
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    mul $t1, $t1, $t2
+
+ 	Bypassing:
+
+ Ciclo 82:
+ 	Busca:
+
+ 	Emição:
+		    addi $v0, $a0, 0
+
+	Executando:
+		    addi $v0, $a0, 0
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $a0, $t1, 0
+
+ 	Efetivando:
+		    beq $a0, $t2, ENDLOOP
+
+ 	Bypassing:
+			a0
+
+ Ciclo 83:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+		    addi $v0, $a0, 0
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+
+ 	Bypassing:
+			a0
+
+ Ciclo 84:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+		    addi $v0, $a0, 0
+
+ 	Efetivando:
+		    addi $a0, $t1, 0
+
+ 	Bypassing:
+			v0
+
+ Ciclo 85:
+ 	Busca:
+
+ 	Emição:
+
+	Executando:
+
+ 	Busca da memória:
+
+ 	Alinhamento:
+
+ 	Escrita:
+
+ 	Efetivando:
+		    addi $v0, $a0, 0
+
+ 	Bypassing:
+
+Instruções:
+	Emitidas: 			26 
+	Efetivadas: 		25 (96.15%) 
+
+Conteúdo dos registradores:
+	zero: 0
+	at: 0
+	v0: 5040
+	v1: 0
+	a0: 5040
+	a1: 0
+	a2: 0
+	a3: 0
+	t0: 0
+	t1: 5040
+	t2: 7
+	t3: 0
+	t4: 0
+	t5: 0
+	t6: 0
+	t7: 0
+	s0: 0
+	s1: 0
+	s2: 0
+	s3: 0
+	s4: 0
+	s5: 0
+	s5: 0
+	s7: 0
+	t8: 0
+	t9: 0
+	k0: 0
+	k1: 0
+	gp: 0
+	sp: 0
+	fp: 0
+	ra: 0
+	hi: 0
+	lo: 0
+
